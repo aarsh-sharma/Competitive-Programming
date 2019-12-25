@@ -70,39 +70,20 @@ const ll N = 1e5 + 10;
 int32_t main() {
   fast_io();
 
-  string s; cin >> s;
-  int n = s.size();
-  f (i, 0, n) {
-    if ((s[i] - '0')%8 == 0) {
-      debug("one");
-      cout << "YES\n" << s[i];
-      return 0;
-    }
+  int n, c; cin >> n >> c;
+  n--;
+  debug(n, c);
+  vll a(n); f (i, 0, n) cin >> a[i];
+  vll b(n); f (i, 0, n) cin >> b[i];
+  vector<pll> dp(n+1);
+  dp[0] = {0, c};
+  debug(a, b);
+  f (i, 1, n+1) {
+    dp[i].F = min(dp[i-1].F, dp[i-1].S) + a[i-1];
+    dp[i].S = min(dp[i-1].F + c, dp[i-1].S) + b[i-1];
   }
-  // debug(typeid(s[0]+s[1]).name());
-  f (i, 0, n) {
-    f (j, i+1, n) {
-      int t = ((s[i]-'0')*10)+(s[j]-'0');
-      if (t%8 == 0) {
-        debug("two");
-        cout << "YES\n" << t;
-        return 0;
-      }
-    }
-  }
-  f (i, 0, n) {
-    f (j, i+1, n) {
-      f (k, j+1, n) {
-        int t = ((s[i]-'0')*100)+((s[j]-'0')*10)+(s[k]-'0');
-        if (t%8 == 0) {
-          debug("three");
-          cout << "YES\n" << t;
-          return 0;
-        }
-      }
-    }
-  }
-  cout << "NO";
+  debug(dp);
+  f (i, 0, n+1) cout << min(dp[i].F, dp[i].S) << ' ';
 
   return 0;
 }

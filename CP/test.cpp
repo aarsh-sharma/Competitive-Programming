@@ -70,30 +70,25 @@ const ll N = 1e5 + 10;
 int32_t main() {
   fast_io();
 
-  int input1; cin >> input1;
-  int input2[input1]; f (i, 0, input1) cin >> input2[i];
-  int a[1010];
-  for (int i = 0; i < 1010; i++)
-    a[i] = 0;
-  for (int i = 0; i < input1; i++)
-  {
-    a[input2[i]]++;
-  }
-  // int n = m.size();
-  // for (pair<int, int> it : m) {
-  //     if (it.second > (input1/2)) {
-  //         return it.first;
-  //     }
-  // }
-  for (int i = 0; i < 1010; i++)
-  {
-    if (a[i] > (input1 / 2))
-    {
-      cout << i;
-      return 0;
+  int n; cin >> n;
+  vll a(n); f (i, 0, n) cin >> a[i];
+  int x; cin >> x;
+  int lo = 0, hi = n-1;
+  int ans = -1;
+  while (lo <= hi) {
+    int mid = (lo+hi)/2;
+    if (a[mid] == x) {
+      ans = mid+1;
+      // hi = mid-1;
+      lo = mid+1;
+    }
+    if (x < a[mid]) {
+      hi = mid-1;
+    } else {
+      lo = mid+1;
     }
   }
-  cout <<  -1;
+  cout << ans;
 
   return 0;
 }

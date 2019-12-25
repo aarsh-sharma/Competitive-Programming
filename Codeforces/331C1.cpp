@@ -67,42 +67,25 @@ const ll mod = 1e9 + 7;
 const ll inf = LLONG_MAX;
 const ll N = 1e5 + 10;
 
+int largest(int n) {
+  int maxm = -inf;
+  while (n) {
+    maxm = max(maxm, n%10);
+    n /= 10;
+  }
+  return maxm;
+}
+
 int32_t main() {
   fast_io();
 
-  string s; cin >> s;
-  int n = s.size();
-  f (i, 0, n) {
-    if ((s[i] - '0')%8 == 0) {
-      debug("one");
-      cout << "YES\n" << s[i];
-      return 0;
-    }
+  int n; cin >> n;
+  int ans = 0;
+  while (n) {
+    ans++;
+    n -= largest(n);
   }
-  // debug(typeid(s[0]+s[1]).name());
-  f (i, 0, n) {
-    f (j, i+1, n) {
-      int t = ((s[i]-'0')*10)+(s[j]-'0');
-      if (t%8 == 0) {
-        debug("two");
-        cout << "YES\n" << t;
-        return 0;
-      }
-    }
-  }
-  f (i, 0, n) {
-    f (j, i+1, n) {
-      f (k, j+1, n) {
-        int t = ((s[i]-'0')*100)+((s[j]-'0')*10)+(s[k]-'0');
-        if (t%8 == 0) {
-          debug("three");
-          cout << "YES\n" << t;
-          return 0;
-        }
-      }
-    }
-  }
-  cout << "NO";
+  cout << ans;
 
   return 0;
 }

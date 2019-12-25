@@ -70,39 +70,24 @@ const ll N = 1e5 + 10;
 int32_t main() {
   fast_io();
 
-  string s; cin >> s;
-  int n = s.size();
-  f (i, 0, n) {
-    if ((s[i] - '0')%8 == 0) {
-      debug("one");
-      cout << "YES\n" << s[i];
-      return 0;
-    }
-  }
-  // debug(typeid(s[0]+s[1]).name());
-  f (i, 0, n) {
-    f (j, i+1, n) {
-      int t = ((s[i]-'0')*10)+(s[j]-'0');
-      if (t%8 == 0) {
-        debug("two");
-        cout << "YES\n" << t;
-        return 0;
+  int q; cin >> q;
+  while (q--) {
+    int n; cin >> n;
+    vll a(n); f (i, 0, n) cin >> a[i];
+    sort(all(a));
+    int flag = 0;
+    f (i, 1, n) {
+      if (a[i] == a[i-1]+1) {
+        flag = 1;
+        break;
       }
     }
-  }
-  f (i, 0, n) {
-    f (j, i+1, n) {
-      f (k, j+1, n) {
-        int t = ((s[i]-'0')*100)+((s[j]-'0')*10)+(s[k]-'0');
-        if (t%8 == 0) {
-          debug("three");
-          cout << "YES\n" << t;
-          return 0;
-        }
-      }
+    if (flag) {
+      cout << 2 << endl;
+    } else {
+      cout << 1 << endl;
     }
   }
-  cout << "NO";
 
   return 0;
 }

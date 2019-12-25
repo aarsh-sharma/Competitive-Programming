@@ -65,13 +65,45 @@ typedef vector<ll> vll;
 
 const ll mod = 1e9 + 7;
 const ll inf = LLONG_MAX;
-const ll N = 1e5 + 10;
+const ll N = 2e5 + 10;
+
+vll g[N];
+int dp[N][2]; 
+
+void dfs(int x, int parent = -1) {
+  for (auto y : g[x]) {
+    if (y == parent) continue;
+    dfs(y, x);
+  }
+
+  dp[x][true] = 0;
+  dp[x][false] = 0;
+
+  vll temp;
+  for (auto y : g[x]) {
+    if (y == parent) continue;
+    dp[x][true] = max(dp[x][true], dp[y][false]);
+    dp[x][false] += dp[y][true];
+    temp.pb(dp[y][true]-dp[y][false]);
+  }
+  dp[x][true]++;
+  sort(all(temp));
+  if (temp.size() > 1) {
+    dp[x][false] -= temp[0];
+  }
+}
 
 int32_t main() {
   fast_io();
 
   int n; cin >> n;
-  
+  f (i, 0, n-1) {
+    int u, v; cin >> u >> v;
+    g[u].pb(v);
+    g[v].pb(u);
+  }
+  dfs(1);
+  cout << dp[1][false] << endl;
 
   return 0;
 }

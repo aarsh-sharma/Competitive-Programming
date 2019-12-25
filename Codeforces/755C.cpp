@@ -67,42 +67,45 @@ const ll mod = 1e9 + 7;
 const ll inf = LLONG_MAX;
 const ll N = 1e5 + 10;
 
+vll strength(N), parent(N);
+
+void make_set(int v) {
+    parent[v] = v;
+    strength[v] = 1;
+}
+
+int find_set(int v) {
+    if (v == parent[v])
+        return v;
+    return parent[v] = find_set(parent[v]);
+}
+
+void union_sets(int a, int b) {
+    a = find_set(a);
+    b = find_set(b);
+    if (a != b) {
+        if (strength[a] < strength[b])
+            swap(a, b);
+        parent[b] = a;
+        strength[a] += strength[b];
+    }
+}
+
 int32_t main() {
   fast_io();
 
-  string s; cin >> s;
-  int n = s.size();
+  int n; cin >> n;
+  f (i, 1, n+1) make_set(i);
   f (i, 0, n) {
-    if ((s[i] - '0')%8 == 0) {
-      debug("one");
-      cout << "YES\n" << s[i];
-      return 0;
-    }
+  	int temp; cin >> temp;
+  	union_sets(i+1, temp);
   }
-  // debug(typeid(s[0]+s[1]).name());
-  f (i, 0, n) {
-    f (j, i+1, n) {
-      int t = ((s[i]-'0')*10)+(s[j]-'0');
-      if (t%8 == 0) {
-        debug("two");
-        cout << "YES\n" << t;
-        return 0;
-      }
-    }
+  set<int> s;
+  f (i, 1, n+1) {
+  	s.insert(find_set(i));
   }
-  f (i, 0, n) {
-    f (j, i+1, n) {
-      f (k, j+1, n) {
-        int t = ((s[i]-'0')*100)+((s[j]-'0')*10)+(s[k]-'0');
-        if (t%8 == 0) {
-          debug("three");
-          cout << "YES\n" << t;
-          return 0;
-        }
-      }
-    }
-  }
-  cout << "NO";
+  cout << s.size();
+
 
   return 0;
 }

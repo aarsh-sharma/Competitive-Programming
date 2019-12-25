@@ -71,38 +71,20 @@ int32_t main() {
   fast_io();
 
   string s; cin >> s;
-  int n = s.size();
+  int n; n = s.size();
+  vector<vll> dp(2, vll(n+1, 0));
   f (i, 0, n) {
-    if ((s[i] - '0')%8 == 0) {
-      debug("one");
-      cout << "YES\n" << s[i];
-      return 0;
+    if (s[i] >= 'A' and s[i] <= 'Z') {
+      dp[0][i+1] = dp[0][i];
+      dp[1][i+1] = min(dp[1][i], dp[0][i]) + 1;
+    } else {
+      dp[0][i+1] = dp[0][i] + 1;
+      dp[1][i+1] = min(dp[1][i], dp[0][i]);
     }
   }
-  // debug(typeid(s[0]+s[1]).name());
-  f (i, 0, n) {
-    f (j, i+1, n) {
-      int t = ((s[i]-'0')*10)+(s[j]-'0');
-      if (t%8 == 0) {
-        debug("two");
-        cout << "YES\n" << t;
-        return 0;
-      }
-    }
-  }
-  f (i, 0, n) {
-    f (j, i+1, n) {
-      f (k, j+1, n) {
-        int t = ((s[i]-'0')*100)+((s[j]-'0')*10)+(s[k]-'0');
-        if (t%8 == 0) {
-          debug("three");
-          cout << "YES\n" << t;
-          return 0;
-        }
-      }
-    }
-  }
-  cout << "NO";
+  debug(dp[0]);
+  debug(dp[1]);
+  cout << min(dp[0][n], dp[1][n]);
 
   return 0;
 }

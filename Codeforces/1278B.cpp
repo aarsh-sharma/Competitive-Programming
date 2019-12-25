@@ -70,39 +70,27 @@ const ll N = 1e5 + 10;
 int32_t main() {
   fast_io();
 
-  string s; cin >> s;
-  int n = s.size();
-  f (i, 0, n) {
-    if ((s[i] - '0')%8 == 0) {
-      debug("one");
-      cout << "YES\n" << s[i];
-      return 0;
+  int t; cin >> t;
+  while (t--) {
+    int a, b; cin >> a >> b;
+    if (a == b) {
+      cout << 0 << endl;
+      continue;
     }
-  }
-  // debug(typeid(s[0]+s[1]).name());
-  f (i, 0, n) {
-    f (j, i+1, n) {
-      int t = ((s[i]-'0')*10)+(s[j]-'0');
-      if (t%8 == 0) {
-        debug("two");
-        cout << "YES\n" << t;
-        return 0;
+    int ans = 0, diff = abs(b-a);
+    int r = ceil((sqrt((8*diff+1)*1.0) - 1.0)/2.0);
+    int tt = ((r*(r+1))/2) - diff;
+    debug(r, ((r*(r+1))/2), tt);
+    if (tt%2) {
+      r++;
+      tt = ((r*(r+1))/2) - diff;
+      if (tt%2) {
+        r++;
       }
     }
+    cout << r << endl;
   }
-  f (i, 0, n) {
-    f (j, i+1, n) {
-      f (k, j+1, n) {
-        int t = ((s[i]-'0')*100)+((s[j]-'0')*10)+(s[k]-'0');
-        if (t%8 == 0) {
-          debug("three");
-          cout << "YES\n" << t;
-          return 0;
-        }
-      }
-    }
-  }
-  cout << "NO";
+
 
   return 0;
 }

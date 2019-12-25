@@ -65,54 +65,29 @@ typedef vector<ll> vll;
 
 const ll mod = 1e9 + 7;
 const ll inf = LLONG_MAX;
-const ll N = 1e6 + 10;
+const ll N = 1e5 + 10;
 
 int32_t main() {
   fast_io();
 
   int t; cin >> t;
   while (t--) {
-    int n, m; cin >> n >> m;
-    vll g[n+1];
-    f (i, 0, m) {
-      int u, v; cin >> u >> v;
-      g[u].pb(v);
-      g[v].pb(u);
-    }
-    if (m%2) {
-      int idx = -1, flag = 0;
-      f (i, 1, n+1) {
-        if (g[i].size()%2) {
-          idx = i;
-          flag = 1;
-          break;
-        }
-      }
-      if (flag) {
-        cout << "2\n";
-        f (i, 1, n+1) {
-          if (idx == i) cout << "2 ";
-          else cout << "1 ";
-        }
-      } else {
-        cout << "3\n";
-        int num = 0;
-        f (i, 1, n+1) {
-          if (num < 2 and g[i].size()) {
-            num++;
-            cout << num << " ";
-          } else {
-            cout << "3 ";
-          }
-        }
-      }
-    } else {
-      cout << "1\n";
+    int n; cin >> n;
+    vll a(n); f(i, 0, n) cin >> a[i];
+    int ans = 0, ta = 0;
+    do {
+      ta = 0;
       f (i, 0, n) {
-        cout << "1 ";
+        int tt = a[i];
+        f (j, i+1, n) {
+          tt |= a[j];
+        }
+        ta += tt;
       }
-    }
-    cout << endl;
+      // debug(a, ta);
+      ans = max(ta, ans);
+    } while (next_permutation(all(a)));
+    cout << ans << endl;
   }
 
   return 0;

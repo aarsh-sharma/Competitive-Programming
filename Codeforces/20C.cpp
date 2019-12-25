@@ -67,42 +67,58 @@ const ll mod = 1e9 + 7;
 const ll inf = LLONG_MAX;
 const ll N = 1e5 + 10;
 
+vector<vector<pll>> g(N);
+vll vis(N), d(N, inf), p(N, -1);
+int n, m;
+
+void dijkstra(int s = 1) {
+  d[s] = 0;
+  priority_queue<pll, vector<pll>, greater<pll>> pq;
+  pq.push({0, s});
+  f (i, 0, n) {
+    int v = pq.top().S;
+    int d_v = pq.top().F;
+    pq.pop();
+    if (d_v != d[v]) {
+      continue;
+    }
+    vis[v] = 1;
+    for (auto it : g[v]) {
+      int to = it.F;
+      int dist = it.S;
+      if (d[to] > d[v]+dist) {
+        d[to] = d[v] + dist;
+        p[to] = v;
+        pq.push({d[to], to});
+      }
+    }
+  }
+}
+
 int32_t main() {
   fast_io();
 
-  string s; cin >> s;
-  int n = s.size();
-  f (i, 0, n) {
-    if ((s[i] - '0')%8 == 0) {
-      debug("one");
-      cout << "YES\n" << s[i];
-      return 0;
-    }
+  cin >> n >> m;
+  f (i, 0, m) {
+    int u, v, w; cin >> u >> v >> w;
+    g[u].pb({v, w});
+    g[v].pb({u, w});
   }
-  // debug(typeid(s[0]+s[1]).name());
-  f (i, 0, n) {
-    f (j, i+1, n) {
-      int t = ((s[i]-'0')*10)+(s[j]-'0');
-      if (t%8 == 0) {
-        debug("two");
-        cout << "YES\n" << t;
-        return 0;
-      }
-    }
+  dijkstra();
+  if (p[n] == -1) {
+    cout << -1 << endl;
+    return 0;
   }
-  f (i, 0, n) {
-    f (j, i+1, n) {
-      f (k, j+1, n) {
-        int t = ((s[i]-'0')*100)+((s[j]-'0')*10)+(s[k]-'0');
-        if (t%8 == 0) {
-          debug("three");
-          cout << "YES\n" << t;
-          return 0;
-        }
-      }
-    }
+  vll ans;
+  int to = n;
+  while (to != -1) {
+    ans.pb(to);
+    to = p[to];
   }
-  cout << "NO";
+  reverse(all(ans));
+  for (auto it : ans) {
+    cout << it << " ";
+  }
 
   return 0;
 }

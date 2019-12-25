@@ -70,39 +70,33 @@ const ll N = 1e5 + 10;
 int32_t main() {
   fast_io();
 
-  string s; cin >> s;
-  int n = s.size();
+  int n; cin >> n;
+  vll a(n); f (i, 0, n) cin >> a[i];
+  int tot = 0;
   f (i, 0, n) {
-    if ((s[i] - '0')%8 == 0) {
-      debug("one");
-      cout << "YES\n" << s[i];
-      return 0;
-    }
+    tot += a[i]/2;
+    // a[i] /= 2;
   }
-  // debug(typeid(s[0]+s[1]).name());
+  debug(tot);
   f (i, 0, n) {
-    f (j, i+1, n) {
-      int t = ((s[i]-'0')*10)+(s[j]-'0');
-      if (t%8 == 0) {
-        debug("two");
-        cout << "YES\n" << t;
-        return 0;
+    if (tot > 0) {
+      if (a[i] < 0 and a[i]%2) {
+        cout << (a[i]/2)-1 << endl;
+        tot--;
+      } else {
+        cout << a[i] / 2 << endl;
       }
-    }
-  }
-  f (i, 0, n) {
-    f (j, i+1, n) {
-      f (k, j+1, n) {
-        int t = ((s[i]-'0')*100)+((s[j]-'0')*10)+(s[k]-'0');
-        if (t%8 == 0) {
-          debug("three");
-          cout << "YES\n" << t;
-          return 0;
-        }
+    } else if (tot < 0) {
+      if (a[i] > 0 and a[i]%2) {
+        cout << (a[i] / 2) + 1 << endl;
+        tot++;
+      } else {
+        cout << a[i] / 2 << endl;
       }
+    } else {
+      cout << a[i] / 2 << endl;
     }
   }
-  cout << "NO";
 
   return 0;
 }

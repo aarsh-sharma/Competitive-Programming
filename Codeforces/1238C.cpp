@@ -70,39 +70,34 @@ const ll N = 1e5 + 10;
 int32_t main() {
   fast_io();
 
-  string s; cin >> s;
-  int n = s.size();
-  f (i, 0, n) {
-    if ((s[i] - '0')%8 == 0) {
-      debug("one");
-      cout << "YES\n" << s[i];
-      return 0;
-    }
-  }
-  // debug(typeid(s[0]+s[1]).name());
-  f (i, 0, n) {
-    f (j, i+1, n) {
-      int t = ((s[i]-'0')*10)+(s[j]-'0');
-      if (t%8 == 0) {
-        debug("two");
-        cout << "YES\n" << t;
-        return 0;
-      }
-    }
-  }
-  f (i, 0, n) {
-    f (j, i+1, n) {
-      f (k, j+1, n) {
-        int t = ((s[i]-'0')*100)+((s[j]-'0')*10)+(s[k]-'0');
-        if (t%8 == 0) {
-          debug("three");
-          cout << "YES\n" << t;
-          return 0;
+  int q; cin >> q;
+  while (q--) {
+    int h, n; cin >> h >> n;
+    vll a(n+1); f (i, 0, n) cin >> a[i];
+    a[n] = 0;
+    vll dp(n+1);
+    dp[0] = 1;
+    int ans = 0;
+    f (i, 1, n+1) {
+      // debug(a[i], a[i-1]);
+      if (a[i-1]-a[i] == 1) {
+        // debug(1);
+        if (dp[i-1]) {
+          dp[i] = 0;
+        } else {
+          dp[i] = 1;
         }
+      } else {
+        // debug(2);
+        if (!dp[i-1]) {
+          ans++;
+        }
+        dp[i] = 0;
       }
     }
+    // debug(dp);
+    cout << ans << endl;
   }
-  cout << "NO";
 
   return 0;
 }

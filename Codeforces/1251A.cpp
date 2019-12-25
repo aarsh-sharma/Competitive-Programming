@@ -70,39 +70,31 @@ const ll N = 1e5 + 10;
 int32_t main() {
   fast_io();
 
-  string s; cin >> s;
-  int n = s.size();
-  f (i, 0, n) {
-    if ((s[i] - '0')%8 == 0) {
-      debug("one");
-      cout << "YES\n" << s[i];
-      return 0;
-    }
-  }
-  // debug(typeid(s[0]+s[1]).name());
-  f (i, 0, n) {
-    f (j, i+1, n) {
-      int t = ((s[i]-'0')*10)+(s[j]-'0');
-      if (t%8 == 0) {
-        debug("two");
-        cout << "YES\n" << t;
-        return 0;
+  int q; cin >> q;
+  while (q--) {
+    string s; cin >> s;
+    stack<char> st;
+    st.push('#');
+    set<char> ans;
+    for (auto it : s) {
+      if (st.top() == it) {
+        st.pop();
+        ans.insert(st.top());
+      } else {
+        st.push(it);
       }
     }
-  }
-  f (i, 0, n) {
-    f (j, i+1, n) {
-      f (k, j+1, n) {
-        int t = ((s[i]-'0')*100)+((s[j]-'0')*10)+(s[k]-'0');
-        if (t%8 == 0) {
-          debug("three");
-          cout << "YES\n" << t;
-          return 0;
-        }
-      }
+    while (st.size() > 0) {
+      ans.insert(st.top());
+      st.pop();
+
     }
+    for (auto &it : ans) {
+      if (it == '#') continue;
+      cout << it;
+    }
+    cout << endl;
   }
-  cout << "NO";
 
   return 0;
 }

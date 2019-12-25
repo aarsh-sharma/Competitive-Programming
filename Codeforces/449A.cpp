@@ -70,39 +70,26 @@ const ll N = 1e5 + 10;
 int32_t main() {
   fast_io();
 
-  string s; cin >> s;
-  int n = s.size();
-  f (i, 0, n) {
-    if ((s[i] - '0')%8 == 0) {
-      debug("one");
-      cout << "YES\n" << s[i];
-      return 0;
-    }
+  int n, m, k; cin >> n >> m >> k;
+  if (k > (n+m-2)) {
+    cout << -1;
+    return 0;
   }
-  // debug(typeid(s[0]+s[1]).name());
-  f (i, 0, n) {
-    f (j, i+1, n) {
-      int t = ((s[i]-'0')*10)+(s[j]-'0');
-      if (t%8 == 0) {
-        debug("two");
-        cout << "YES\n" << t;
-        return 0;
-      }
-    }
+  int ans1;
+  if (k <= n-1) {
+    ans1 = (n/(k+1)) * m;
+  } else {
+    ans1 = m/(k+1 - (n-1));
   }
-  f (i, 0, n) {
-    f (j, i+1, n) {
-      f (k, j+1, n) {
-        int t = ((s[i]-'0')*100)+((s[j]-'0')*10)+(s[k]-'0');
-        if (t%8 == 0) {
-          debug("three");
-          cout << "YES\n" << t;
-          return 0;
-        }
-      }
-    }
+  int ans2;
+  if (k <= m-1) {
+    ans2 = (m/(k+1)) * n;
+  } else {
+    ans2 = n/(k+1 - (m-1));
   }
-  cout << "NO";
+
+  debug(ans1, ans2);
+  cout << max(ans1, ans2);
 
   return 0;
 }

@@ -70,39 +70,48 @@ const ll N = 1e5 + 10;
 int32_t main() {
   fast_io();
 
-  string s; cin >> s;
-  int n = s.size();
-  f (i, 0, n) {
-    if ((s[i] - '0')%8 == 0) {
-      debug("one");
-      cout << "YES\n" << s[i];
-      return 0;
-    }
-  }
-  // debug(typeid(s[0]+s[1]).name());
-  f (i, 0, n) {
-    f (j, i+1, n) {
-      int t = ((s[i]-'0')*10)+(s[j]-'0');
-      if (t%8 == 0) {
-        debug("two");
-        cout << "YES\n" << t;
-        return 0;
+  int q; cin >> q;
+  while (q--) {
+    int n; cin >> n;
+    int odd = 0, even = 0, ones = 0, oo = 0, ee = 0;
+    bool ev = 1;
+    bool odod = 0;
+    f (i, 0, n) {
+      string s; cin >> s;
+      int l = s.size();
+      if (l%2) {
+        odd++;
+        oo += l;
+      } else {
+        even++;
+        ee += l;
+      }
+      ev &= (s.size() % 2 == 0);
+      odod ^= (s.size() % 2 == 1);
+      f (i, 0, l) {
+        if (s[i] == '1') ones++;
       }
     }
-  }
-  f (i, 0, n) {
-    f (j, i+1, n) {
-      f (k, j+1, n) {
-        int t = ((s[i]-'0')*100)+((s[j]-'0')*10)+(s[k]-'0');
-        if (t%8 == 0) {
-          debug("three");
-          cout << "YES\n" << t;
-          return 0;
-        }
-      }
+    int zeros = oo + ee - ones;
+    int o = 0, e = 0;
+    for (int x : {ones, zeros}) {
+      o += (x % 2 == 1);
+      e += (x % 2 == 0);
+    }
+    if (ones == 0) {  
+      cout << n << endl;
+      continue;
+    }
+    if (o == 1 and e == 1) {
+      cout << (n) << endl;
+    }
+    else if (o == 2) {
+      cout << (n - ev) << endl;
+    }
+    else if (e == 2) {
+      cout << (n - odod) << endl;
     }
   }
-  cout << "NO";
 
   return 0;
 }

@@ -70,18 +70,10 @@ const ll N = 1e5 + 10;
 int32_t main() {
   fast_io();
 
-  int n; cin >> n;
+  int n, k; cin >> n >> k;
   vll a(n); f (i, 0, n) cin >> a[i];
-  vll dp(n);
-  dp[0] = a[0];
-  dp[1] = a[1];
-  int maxm = a[0];
-  f (i, 2, n) {
-    dp[i] = max(a[i] + maxm, a[i]);
-    maxm = max(max(maxm, dp[i-1]), 0ll);
-  }
-  // debug(dp);
-  cout << *max_element(all(dp));
+  sort(all(a));
+  f (i, 0, n) cout << a[i] << ' ';
 
   return 0;
 }
