@@ -70,25 +70,29 @@ const ll N = 1e5 + 10;
 int32_t main() {
   fast_io();
 
-  int t; cin >> t;
-  while (t--) {
-    int n; cin >> n;
-    vll a(n); f(i, 0, n) cin >> a[i];
-    int ans = 0, ta = 0;
-    do {
-      ta = 0;
-      f (i, 0, n) {
-        int tt = a[i];
-        f (j, i+1, n) {
-          tt |= a[j];
-        }
-        ta += tt;
-      }
-      // debug(a, ta);
-      ans = max(ta, ans);
-    } while (next_permutation(all(a)));
-    cout << ans << endl;
+  int n, q; cin >> n >> q;
+  vll a(n); f(i, 0, n) cin >> a[i];
+  vll up(n), down(n);
+  int tt = 1;
+  f (i, 1, n) {
+    if (a[i] <= a[i-1]) {
+      tt++;
+    }
+    up[i-1] = tt;
   }
+  up[n-1] = tt;
+  tt = 1;
+  f (i, 1, n) {
+    if (a[i] >= a[i-1]) {
+      tt++;
+    }
+    down[i-1] = tt;
+  }
+  down[n-1] = tt;
+  debug(up, down);
+  // while (q--) {
+  //   int l, r; cin >> l >> r;
+  // }
 
   return 0;
 }

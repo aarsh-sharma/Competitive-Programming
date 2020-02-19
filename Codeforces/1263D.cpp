@@ -67,80 +67,57 @@ const ll mod = 1e9 + 7;
 const ll inf = LLONG_MAX;
 const ll N = 1e5 + 10;
 
+vll parent(N, -1), strength(N);
+
+void make_set(int v) {
+  parent[v] = v;
+  strength[v] = 1;
+}
+
+int find_set(int v) {
+  if (v == parent[v])
+    return v;
+  return parent[v] = find_set(parent[v]);
+}
+
+void union_sets(int a, int b) {
+  a = find_set(a);
+  b = find_set(b);
+  if (a != b) {
+    if (strength[a] < strength[b]) {
+      swap(a, b);
+    }
+    parent[b] = a;
+    strength[a] += strength[b];
+  }
+}
+
 int32_t main() {
   fast_io();
 
   int n; cin >> n;
-  vll a(n);
-  f (i, 0, n) cin >> a[i];
-  vll pos;
-  int i = 0, ans = 0;
-  while (i < n-1) {
-    if (a[i] > 0) {
-      auto next = max_element(a.begin()+i+1, a.end());
-      if (*next > a[i]) {
-        f (j, i+1, n) {
-          if (a[j] > a[i]) {
-            f (k, i+1, j) {
-              ans += a[i] - a[k];
-            }
-            debug(i, j, ans);
-            i = j;
-            break;
-          }
-        }
-      } else {
-        int mini = min(*next, a[i]);
-        for (auto it = a.begin()+i+1; it < next; it++) {
-          ans += mini - *it;
-        }
-        debug(i, next-a.begin(), ans);
-        i = next - a.begin();
+  vector<string> ss;
+  f (i, 0, n) {
+    string s; cin >> s;
+    ss.pb(s);
+    int nn = s.size();
+    f (i, 0, nn) {
+      if (parent[s[i]-'a'] == -1) {
+        make_set(s[i]-'a');
       }
-      continue;
     }
-    i++;
+    f (i, 1, nn) {
+      union_sets(s[i]-'a', s[i-1]-'a');
+    }
   }
-  cout << ans;
-
-  // other answer
-  /*
-    int t; cin >> t;
-  while (t--) {
-    int n; cin >> n;
-    vll a(n); f (i, 0, n) cin >> a[i];
-    int ans = 0, idx = 0, flag = 1;
-    while (flag) {
-      f (i, idx+1, n) {
-        if (a[i] >= a[idx]) {
-          f (j, idx+1, i) {
-            ans += min(a[idx], a[i]) - a[j];
-          }
-          idx = i;
-        }
-        if (i == n-1) flag = 0;
-      }
-      if (idx == n-1) break;
+  set<int> sss;
+  f (i, 0, 26) {
+    if (parent[i] != -1) {
+      debug(find_set(i), parent[i]);
+      sss.insert(find_set(i));
     }
-    vll temp;
-    f (i, idx, n) temp.pb(a[i]);
-    reverse(all(temp));
-    idx = 0, flag = 1, n = temp.size();
-    while (flag) {
-      f (i, idx+1, n) {
-        if (temp[i] >= temp[idx]) {
-          f (j, idx+1, i) {
-            ans += min(temp[idx], temp[i]) - temp[j];
-          }
-          idx = i;
-        }
-        if (i >= n-1) flag = 0;
-      }
-      if (idx == n-1) break;
-    }
-    cout << ans << endl;
   }
-  */
+  cout << sss.size();
 
   return 0;
 }

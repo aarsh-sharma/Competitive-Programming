@@ -71,37 +71,7 @@ int32_t main() {
   fast_io();
 
   int n; cin >> n;
-  vll a(n);
-  f (i, 0, n) cin >> a[i];
-  vll pos;
-  int i = 0, ans = 0;
-  while (i < n-1) {
-    if (a[i] > 0) {
-      auto next = max_element(a.begin()+i+1, a.end());
-      if (*next > a[i]) {
-        f (j, i+1, n) {
-          if (a[j] > a[i]) {
-            f (k, i+1, j) {
-              ans += a[i] - a[k];
-            }
-            debug(i, j, ans);
-            i = j;
-            break;
-          }
-        }
-      } else {
-        int mini = min(*next, a[i]);
-        for (auto it = a.begin()+i+1; it < next; it++) {
-          ans += mini - *it;
-        }
-        debug(i, next-a.begin(), ans);
-        i = next - a.begin();
-      }
-      continue;
-    }
-    i++;
-  }
-  cout << ans;
+  vll a(n); f (i, 0, n) cin >> a[i];
 
   return 0;
 }
