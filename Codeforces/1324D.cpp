@@ -70,7 +70,21 @@ const ll N = 1e5 + 10;
 int32_t main() {
   fast_io();
 
-  // code here
+  int n; cin >> n;
+  vll a(n); f (i, 0, n) cin >> a[i];
+  vll b(n); f (i, 0, n) cin >> b[i];
+  vll diff(n); f (i, 0, n) diff[i] = a[i] - b[i];
+  sort(all(diff));
+  int ans = 0;
+  debug(diff);
+  f (i, 0, n) {
+    if (diff[i] <= 0) {
+      ans += diff.end() - upper_bound(all(diff), abs(diff[i]));
+    } else {
+      ans += n - i - 1;
+    }
+  }
+  cout << ans;
 
   return 0;
 }

@@ -70,7 +70,17 @@ const ll N = 1e5 + 10;
 int32_t main() {
   fast_io();
 
-  // code here
+  int t; cin >> t;
+  while (t--) {
+    int n; cin >> n;
+    if (n == 1) {
+      cout << -1 << endl;
+      continue;
+    }
+    cout << "2";
+    f (i, 0, n-1) cout << "3";
+    cout << endl;
+  }
 
   return 0;
 }

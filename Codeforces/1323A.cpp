@@ -70,7 +70,28 @@ const ll N = 1e5 + 10;
 int32_t main() {
   fast_io();
 
-  // code here
+  int t; cin >> t;
+  while (t--) {
+    int n; cin >> n;
+    vll a(n); f (i, 0, n) cin >> a[i];
+    int flag = 0;
+    f (i, 0, n) {
+      if (a[i]%2 == 0) {
+        cout << 1 << endl << i+1 << endl;
+        flag = 1;
+        break;
+      } else if (i != n-1) {
+        if (a[i]%2 and a[i+1]%2) {
+          cout << 2 << endl << i+1 << " " << i+2 << endl;
+          flag = 1;
+          break;
+        }
+      }
+    }
+    if (!flag) {
+      cout << -1 << endl;
+    }
+  }
 
   return 0;
 }

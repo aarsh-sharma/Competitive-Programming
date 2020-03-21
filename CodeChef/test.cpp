@@ -67,32 +67,72 @@ const ll mod = 1e9 + 7;
 const ll inf = LLONG_MAX;
 const ll N = 1e5 + 10;
 
+vector<pll> ans;
+
+void travel(int x, int y, int dirn) {
+  int temp = 0;
+  while (true) {
+    if ((dirn == 1 and x == 8) or (dirn == -1 and x == 1)) {
+      break;
+    }
+    x += dirn;
+    if (temp%2) {
+      y -= 1;
+    } else {
+      y += 1;
+    }
+    temp++;
+    ans.pb({x, y});
+  }
+}
+
+void print(vector<pll> a) {
+  for (auto &it : a) {
+    cout << it.F << " " << it.S << endl;
+  }
+}
+
 int32_t main() {
   fast_io();
 
-  int n, q; cin >> n >> q;
-  vll a(n); f(i, 0, n) cin >> a[i];
-  vll up(n), down(n);
-  int tt = 1;
-  f (i, 1, n) {
-    if (a[i] <= a[i-1]) {
-      tt++;
+  int t; cin >> t;
+  travel(1, 1, 1);
+  travel(8, 2, -1);
+  travel(1, 3, 1);
+  travel(8, 4, -1);
+  travel(1, 5, 1);
+  travel(8, 6, -1);
+  travel(1, 7, 1);
+  debug(ans.size());
+  while (t--) {
+    int x, y; cin >> x >> y;
+    vector<pll> temp = {{x, y}};
+    while (x > 1 and y > 1) {
+      x--; y--;
+      temp.pb({x, y});
     }
-    up[i-1] = tt;
-  }
-  up[n-1] = tt;
-  tt = 1;
-  f (i, 1, n) {
-    if (a[i] >= a[i-1]) {
-      tt++;
+    while (x > 1) {
+      x--;
+      if (x%2) {
+        y = 1;
+      } else {
+        y = 2;
+      }
+      temp.pb({x, y});
     }
-    down[i-1] = tt;
+    while (y > 1) {
+      y--;
+      if (y%2) {
+        x = 1;
+      } else {
+        x = 2;
+      }
+      temp.pb({x, y});
+    }
+    cout << temp.size() + ans.size() << endl;
+    print(temp);
+    print(ans);
   }
-  down[n-1] = tt;
-  debug(up, down);
-  // while (q--) {
-  //   int l, r; cin >> l >> r;
-  // }
 
   return 0;
 }

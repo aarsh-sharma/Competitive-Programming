@@ -70,7 +70,13 @@ const ll N = 1e5 + 10;
 int32_t main() {
   fast_io();
 
-  // code here
+  int n; cin >> n;
+  vll a(n); f (i, 0, n) cin >> a[i];
+  int maxm = 0;
+  f (i, 0, n) {
+    cout << maxm + a[i] << " ";
+    maxm = max(maxm, maxm + a[i]);
+  }
 
   return 0;
 }

@@ -70,7 +70,33 @@ const ll N = 1e5 + 10;
 int32_t main() {
   fast_io();
 
-  // code here
+  int n, m, k; cin >> n >> m >> k;
+  vll a(n); f (i, 0, n) cin >> a[i];
+  vll b(m); f (i, 0, m) cin >> b[i];
+  f (i, 1, n) {
+    if (a[i]) {
+      a[i] += a[i-1];
+    }
+  }
+  f (i, 1, m) {
+    if (b[i]) {
+      b[i] += b[i-1];
+    }
+  }
+  sort(all(a));
+  sort(all(b));
+  int ans = 0;
+  map<int, int> mm;
+  f (i, 0, n) {
+    if (a[i] and k%a[i] == 0) {
+      int nums = b.end() - lower_bound(all(b), k/a[i]);
+      mm[a[i]] = max(mm[a[i]], nums*(n-i));
+    }
+  }
+  for (auto it : mm) {
+    ans += it.S;
+  }
+  cout << ans << endl;
 
   return 0;
 }

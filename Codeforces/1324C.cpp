@@ -70,7 +70,20 @@ const ll N = 1e5 + 10;
 int32_t main() {
   fast_io();
 
-  // code here
+  int t; cin >> t;
+  while (t--) {
+    string s; cin >> s;
+    int n = s.size(), dist = 0, temp = 0;
+    f (i, 0, n) {
+      if (s[i] == 'L') {
+        temp++;
+        dist = max(dist, temp);
+      } else {
+        temp = 0;
+      }
+    }
+    cout << dist+1 << endl;
+  }
 
   return 0;
 }

@@ -70,7 +70,32 @@ const ll N = 1e5 + 10;
 int32_t main() {
   fast_io();
 
-  // code here
+  int t; cin >> t;
+  while (t--) {
+    int n; cin >> n;
+    vll pos[n+1];
+    vll a(n);
+    f (i, 0, n) {
+      cin >> a[i];
+      pos[a[i]].pb(i);
+    }
+    int flag = 0;
+    f (i, 0, n+1) {
+      if (pos[i].size() > 1) {
+        int nn = pos[i].size();
+        f (j, 1, nn) {
+          if (pos[i][j] - pos[i][j-1] > 1) {
+            flag = 1;
+            break;
+          }
+        }
+      }
+      if (pos[i].size() > 2) flag = 1;
+      if (flag) break;
+    }
+    if (flag) cout << "YES" << endl;
+    else cout << "NO" << endl;
+  }
 
   return 0;
 }

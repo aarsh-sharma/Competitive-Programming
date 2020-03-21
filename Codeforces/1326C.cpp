@@ -63,14 +63,30 @@ typedef pair<ll, ll> pll;
 typedef vector<vector<ll>> matrix;
 typedef vector<ll> vll;
 
-const ll mod = 1e9 + 7;
+const ll mod = 998244353;
 const ll inf = LLONG_MAX;
 const ll N = 1e5 + 10;
 
 int32_t main() {
   fast_io();
 
-  // code here
+  int n, k; cin >> n >> k;
+  vll a(n); f (i, 0, n) cin >> a[i];
+  vll pos;
+  int sum = 0;
+  f (i, 0, n) {
+    if (a[i] > n-k) {
+      pos.pb(i);
+      sum += a[i];
+    }
+  }
+  debug(pos);
+  int prod = 1;
+  f (i, 1, k) {
+    int d = pos[i] - pos[i-1];
+    prod = (prod%mod * d%mod)%mod;
+  }
+  cout << sum << " " << prod << endl;
 
   return 0;
 }

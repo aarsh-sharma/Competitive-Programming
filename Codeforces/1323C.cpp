@@ -70,7 +70,32 @@ const ll N = 1e5 + 10;
 int32_t main() {
   fast_io();
 
-  // code here
+  int n; cin >> n;
+  string s; cin >> s;
+  int ans = 0, curr = 0, neg = 0, start = 0;
+  f (i, 0, n) {
+    if (s[i] == '(') {
+      curr++;
+    } else {
+      curr--;
+    }
+    if (curr < 0) {
+      neg = 1;
+    }
+    if (curr == 0) {
+      debug(neg, start, ans, i);
+      if (neg) {
+        ans += i - start + 1;
+      }
+      neg = 0;
+      start = i+1;
+    }
+  }
+  if (curr) {
+    cout << -1 << endl;
+  } else {
+    cout << ans << endl;
+  }
 
   return 0;
 }

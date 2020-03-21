@@ -67,10 +67,72 @@ const ll mod = 1e9 + 7;
 const ll inf = LLONG_MAX;
 const ll N = 1e5 + 10;
 
+bool isPalindrome(string str)
+{
+  int l = 0;
+  int h = str.size() - 1;
+  while (h > l)
+  {
+    if (str[l++] != str[h--])
+    {
+      return false;
+    }
+  }
+  return true;
+}
+
 int32_t main() {
   fast_io();
 
-  // code here
+  int t; cin >> t;
+  while (t--) {
+    string s; cin >> s;
+    int n = s.size();
+    if (n == 1) {
+      cout << s << endl;
+      continue;
+    }
+    string ans = "";
+    int l = 0, r = n-1;
+    while (l < r) {
+      if (s[l] == s[r]) {
+        ans += s[l];
+        l++; r--;
+      } else {
+        break;
+      }
+    }
+    if (ans.size() == s.size()) {
+      cout << ans << endl;
+      continue;
+    }
+    // debug(ans);
+    string rem = s.substr(ans.size(), s.size() - 2*ans.size());
+    // debug(rem);
+    string remans;
+    f (i, 0, rem.size()+1) {
+      if (isPalindrome(rem.substr(0, i))) {
+        remans = rem.substr(0, i);
+      }
+    }
+    // debug(remans);
+    reverse(all(rem));
+    string remans1;
+    f (i, 0, rem.size()+1) {
+      if (isPalindrome(rem.substr(0, i))) {
+        remans1 = rem.substr(0, i);
+      }
+    }
+    cout << ans;
+    if (remans.size() > remans1.size()) {
+      cout << remans;
+    } else {
+      cout << remans1;
+    }
+    reverse(all(ans));
+    cout << ans;
+    cout << endl;
+  }
 
   return 0;
 }

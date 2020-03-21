@@ -70,7 +70,77 @@ const ll N = 1e5 + 10;
 int32_t main() {
   fast_io();
 
-  // code here
+  int n; cin >> n;
+  vll a(n);
+  f (i, 0, n) cin >> a[i];
+  vll pos;
+  int i = 0, ans = 0;
+  while (i < n-1) {
+    if (a[i] > 0) {
+      auto next = max_element(a.begin()+i+1, a.end());
+      if (*next > a[i]) {
+        f (j, i+1, n) {
+          if (a[j] > a[i]) {
+            f (k, i+1, j) {
+              ans += a[i] - a[k];
+            }
+            debug(i, j, ans);
+            i = j;
+            break;
+          }
+        }
+      } else {
+        int mini = min(*next, a[i]);
+        for (auto it = a.begin()+i+1; it < next; it++) {
+          ans += mini - *it;
+        }
+        debug(i, next-a.begin(), ans);
+        i = next - a.begin();
+      }
+      continue;
+    }
+    i++;
+  }
+  cout << ans;
+
+  // other answer
+  /*
+    int t; cin >> t;
+  while (t--) {
+    int n; cin >> n;
+    vll a(n); f (i, 0, n) cin >> a[i];
+    int ans = 0, idx = 0, flag = 1;
+    while (flag) {
+      f (i, idx+1, n) {
+        if (a[i] >= a[idx]) {
+          f (j, idx+1, i) {
+            ans += min(a[idx], a[i]) - a[j];
+          }
+          idx = i;
+        }
+        if (i == n-1) flag = 0;
+      }
+      if (idx == n-1) break;
+    }
+    vll temp;
+    f (i, idx, n) temp.pb(a[i]);
+    reverse(all(temp));
+    idx = 0, flag = 1, n = temp.size();
+    while (flag) {
+      f (i, idx+1, n) {
+        if (temp[i] >= temp[idx]) {
+          f (j, idx+1, i) {
+            ans += min(temp[idx], temp[i]) - temp[j];
+          }
+          idx = i;
+        }
+        if (i >= n-1) flag = 0;
+      }
+      if (idx == n-1) break;
+    }
+    cout << ans << endl;
+  }
+  */
 
   return 0;
 }

@@ -70,7 +70,23 @@ const ll N = 1e5 + 10;
 int32_t main() {
   fast_io();
 
-  // code here
+  int t; cin >> t;
+  while (t--) {
+    int n; cin >> n;
+    vll a(n); f (i, 0, n) cin >> a[i];
+    int mini = *min_element(all(a)), flag = 0;
+    f (i, 0, n) {
+      a[i] -= mini;
+      if (a[i]%2) {
+        cout << "NO" << endl;
+        flag = 1;
+        break;
+      }
+    }
+    if (!flag) {
+      cout << "YES" << endl;
+    }
+  }
 
   return 0;
 }

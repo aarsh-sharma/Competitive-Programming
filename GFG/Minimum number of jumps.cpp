@@ -65,12 +65,41 @@ typedef vector<ll> vll;
 
 const ll mod = 1e9 + 7;
 const ll inf = LLONG_MAX;
-const ll N = 1e5 + 10;
+const ll N = 1e7 + 10;
 
 int32_t main() {
   fast_io();
 
-  // code here
+  int t; cin >> t;
+  while (t--) {
+    int n; cin >> n;
+    vll a(n); f (i, 0, n) cin >> a[i];
+    if (n == 1) {
+      cout << 0 << endl;
+      continue;
+    }
+    if (!a[0]) {
+      cout << -1 << endl;
+      continue;
+    }
+    int steps = 1, fw = a[0], tfw = 0, flag = 0;
+    f (i, 1, n) {
+      if (!fw) break;
+      if (i == n-1) {
+        flag = 1;
+        break;
+      }
+      tfw = max(tfw, a[i] - (fw - 1));
+      fw--;
+      if (fw == 0) {
+        steps++;
+        fw = tfw;
+        tfw = 0;
+      }
+    }
+    if (flag) cout << steps << endl;
+    else cout << -1 << endl;
+  }
 
   return 0;
 }
