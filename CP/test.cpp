@@ -70,25 +70,30 @@ const ll N = 1e5 + 10;
 int32_t main() {
   fast_io();
 
-  int n; cin >> n;
-  vll a(n); f (i, 0, n) cin >> a[i];
-  int x; cin >> x;
-  int lo = 0, hi = n-1;
-  int ans = -1;
-  while (lo <= hi) {
-    int mid = (lo+hi)/2;
-    if (a[mid] == x) {
-      ans = mid+1;
-      // hi = mid-1;
-      lo = mid+1;
-    }
-    if (x < a[mid]) {
-      hi = mid-1;
+  string s; cin >> s;
+  map<char, int> m;
+  vector<pair<char, pll>> times(26);
+  f (i, 0, 26) {
+    m[s[i]] = i;
+    times[i].F = s[i];
+  }
+  string ss, ans = ""; cin >> ss;
+  int n = ss.length();
+  f (i, 0, n) {
+    if (ss[i] <= 'z' and ss[i] >= 'a') {
+      times[m[ss[i]]].S.S++;
     } else {
-      lo = mid+1;
+      times[m[ss[i] - 'A' + 'a']].S.F++;
     }
   }
-  cout << ans;
+  f (i, 0, 26) {
+    f (j, 0, times[i].S.F) {
+      cout << char('A' + (times[i].F - 'a'));
+    }
+    f (j, 0, times[i].S.S) {
+      cout << char(times[i].F);
+    }
+  }
 
   return 0;
 }

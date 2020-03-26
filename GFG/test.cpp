@@ -70,7 +70,22 @@ const ll N = 1e5 + 10;
 int32_t main() {
   fast_io();
 
-  // code here
+  int t; cin >> t;
+  while (t--) {
+    int n, m; cin >> n >> m;
+    vll a(n); f (i, 0, n) cin >> a[i];
+    vll b(m); f (i, 0, m) cin >> b[i];
+    sort(all(b));
+    // debug(b);
+    int ans = 0;
+    f (i, 0, n) {
+      if (a[i] == 1) continue;
+      ans += b.end() - upper_bound(all(b), a[i]);
+      if (b[0] == 1 and a[i] != 1) ans++;
+      if (a[i] == 3 and (b[0] == 2 or b[1] == 2)) ans++;
+    }
+    cout << ans << endl;
+  }
 
   return 0;
 }

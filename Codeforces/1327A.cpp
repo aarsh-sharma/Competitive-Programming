@@ -70,19 +70,19 @@ const ll N = 1e5 + 10;
 int32_t main() {
   fast_io();
 
-  int n, k; cin >> n >> k;
-  vll a(n), ss(n); f(i, 0, n) cin >> a[i];
-  sort(all(a));
-  f (i, 0, n) {
-    ss[i] = a[i];
-    if (i >= k) ss[i] += ss[i-k];
+  int t; cin >> t;
+  while (t--) {
+    int a, b; cin >> a >> b;
+    if (a < b*b) {
+      cout << "NO\n";
+      continue;
+    }
+    if ((a%2)^(b%2)) {
+      cout << "NO\n";
+    } else {
+      cout << "YES\n";
+    }
   }
-  vll dp(n);
-  dp[0] = ss[0];
-  f (i, 1, n) {
-    dp[i] = ss[i] + dp[i-1];
-  }
-  f (i, 0, n) cout << dp[i] << ' '; cout << endl;
 
   return 0;
 }

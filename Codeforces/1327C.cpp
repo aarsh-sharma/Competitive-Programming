@@ -70,19 +70,37 @@ const ll N = 1e5 + 10;
 int32_t main() {
   fast_io();
 
-  int n, k; cin >> n >> k;
-  vll a(n), ss(n); f(i, 0, n) cin >> a[i];
-  sort(all(a));
+  int n, m, k; cin >> n >> m >> k;
+  vector<vll> start(k, vll (2));
+  vector<vll> end(k, vll (2));
+  f (i, 0, k) {
+    f (j, 0, 2) {
+      cin >> start[i][j];
+    }
+  }
+  f (i, 0, k) {
+    f (j, 0, 2) {
+      cin >> end[i][j];
+    }
+  }
+  string ans = "";
+  f (i, 0, n-1) {
+    ans += "U";
+  }
+  f (i, 0, m-1) {
+    ans += "L";
+  }
   f (i, 0, n) {
-    ss[i] = a[i];
-    if (i >= k) ss[i] += ss[i-k];
+    f (j, 0, m-1) {
+      if (!(i%2)) {
+        ans += "R";
+      } else {
+        ans += "L";
+      }
+    }
+    ans += "D";
   }
-  vll dp(n);
-  dp[0] = ss[0];
-  f (i, 1, n) {
-    dp[i] = ss[i] + dp[i-1];
-  }
-  f (i, 0, n) cout << dp[i] << ' '; cout << endl;
+  cout << ans.size() << endl << ans;
 
   return 0;
 }

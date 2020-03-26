@@ -70,19 +70,46 @@ const ll N = 1e5 + 10;
 int32_t main() {
   fast_io();
 
-  int n, k; cin >> n >> k;
-  vll a(n), ss(n); f(i, 0, n) cin >> a[i];
-  sort(all(a));
-  f (i, 0, n) {
-    ss[i] = a[i];
-    if (i >= k) ss[i] += ss[i-k];
+  int t; cin >> t;
+  while (t--) {
+    int n; cin >> n;
+    vll prince(n);
+    vll princess[n];
+    int rem = -1;
+    f (i, 0, n) {
+      int nn; cin >> nn;
+      f (j, 0, nn) {
+        int temp; cin >> temp;
+        princess[i].push_back(temp);
+      }
+      sort(all(princess[i]));
+      int flag = 0;
+      f (j, 0, nn) {
+        if (prince[princess[i][j]-1] == 0) {
+          prince[princess[i][j]-1] = 1;
+          flag = 1;
+          break;
+        }
+      }
+      if (!flag and rem == -1) {
+        rem = i;
+      }
+    }
+    // debug(prince);
+    if (rem == -1) {
+      cout << "OPTIMAL\n";
+    } else {
+      cout << "IMPROVE\n";
+      f (i, 0, n) {
+        if (prince[i] == 0) {
+          cout << rem+1 << " " << i+1 << endl;
+          break;
+        }
+      }
+    }
+
   }
-  vll dp(n);
-  dp[0] = ss[0];
-  f (i, 1, n) {
-    dp[i] = ss[i] + dp[i-1];
-  }
-  f (i, 0, n) cout << dp[i] << ' '; cout << endl;
+
 
   return 0;
 }

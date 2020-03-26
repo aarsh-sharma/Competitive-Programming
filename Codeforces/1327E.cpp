@@ -63,26 +63,32 @@ typedef pair<ll, ll> pll;
 typedef vector<vector<ll>> matrix;
 typedef vector<ll> vll;
 
-const ll mod = 1e9 + 7;
+const ll mod = 998244353;
 const ll inf = LLONG_MAX;
 const ll N = 1e5 + 10;
+
+int power(int x, int y, int p=mod) {
+  int res = 1;
+  x = x % p;
+  while (y > 0) {
+    if (y & 1)
+      res = (res * x) % p;
+    y = y >> 1;
+    x = (x * x) % p;
+  }
+  return res;
+}
 
 int32_t main() {
   fast_io();
 
-  int n, k; cin >> n >> k;
-  vll a(n), ss(n); f(i, 0, n) cin >> a[i];
-  sort(all(a));
-  f (i, 0, n) {
-    ss[i] = a[i];
-    if (i >= k) ss[i] += ss[i-k];
-  }
-  vll dp(n);
-  dp[0] = ss[0];
+  int n; cin >> n;
   f (i, 1, n) {
-    dp[i] = ss[i] + dp[i-1];
+    int ends = (2*10*9*power(10, n-i-1))%mod;
+    int middles = (10*9*9*(n-i-1)*power(10, n-i-2))%mod;
+    cout << (ends+middles)%mod << " ";
   }
-  f (i, 0, n) cout << dp[i] << ' '; cout << endl;
+  cout << 10 << endl;
 
   return 0;
 }
