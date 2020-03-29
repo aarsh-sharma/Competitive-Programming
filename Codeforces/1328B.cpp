@@ -4,17 +4,17 @@
 using namespace std;
 
 string to_string(string s) {
-    return '"' + s + '"';
+  return '"' + s + '"';
 }
 string to_string(char ch) {
-    string s(1, ch);
-    return '\'' + s + '\'';
+  string s(1, ch);
+  return '\'' + s + '\'';
 }
 string to_string(const char *s) {
-    return to_string((string)s);
+  return to_string((string)s);
 }
 string to_string(bool b) {
-    return (b ? "true" : "false");
+  return (b ? "true" : "false");
 }
 template <typename A, typename B>
 string to_string(pair<A, B> p) {
@@ -22,23 +22,23 @@ return "(" + to_string(p.first) + ", " + to_string(p.second) + ")";
 }
 template <typename A>
 string to_string(A v) {
-    bool first = true;
-    string res = "{";
-    for (const auto &x : v) {
-        if (!first) {
-            res += ", ";
-        }
-        first = false;
-        res += to_string(x);
+  bool first = true;
+  string res = "{";
+  for (const auto &x : v) {
+    if (!first) {
+      res += ", ";
     }
-    res += "}";
-    return res;
+    first = false;
+    res += to_string(x);
+  }
+  res += "}";
+  return res;
 }
 void debug_out() { cerr << endl; }
 template <typename Head, typename... Tail>
 void debug_out(Head H, Tail... T) {
-    cerr << " " << to_string(H);
-    debug_out(T...);
+  cerr << " " << to_string(H);
+  debug_out(T...);
 }
 
 #ifndef ONLINE_JUDGE
@@ -68,9 +68,25 @@ const ll inf = LLONG_MAX;
 const ll N = 1e5 + 10;
 
 int32_t main() {
-    fast_io();
+  fast_io();
 
-    // code here
+  debug("start");
+  int t; cin >> t;
+  while (t--) {
+    int n, k; cin >> n >> k;
+    int nn = ceil((-1.0 + sqrt(1.0+8.0*k))/2.0) + 1;
+    int rem = k - ((((nn-2)*((nn-2)+1))/2));
+    string ans = "";
+    for (int i = 1; i < n+1; i++) {
+      if (i == nn or i == rem) {
+        ans += 'b';
+      } else {
+        ans += 'a';
+      }
+    }
+    reverse(all(ans));
+    cout << ans << endl;
+  }
 
-    return 0;
+  return 0;
 }

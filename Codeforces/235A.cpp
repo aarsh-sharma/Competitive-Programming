@@ -70,7 +70,20 @@ const ll N = 1e5 + 10;
 int32_t main() {
     fast_io();
 
-    // code here
+    int n; cin >> n;
+    if (n == 1) {
+        cout << 1 << endl; return 0;
+    } else if (n == 2) {
+        cout << 2 << endl; return 0;
+    } else if (n == 6) {
+        cout << 60 << endl; return 0;
+    }
+    if (n%2) {
+        cout << n*(n-1)*(n-2) << endl;
+    } else {
+        if (n%3 == 0) cout << (n-1)*(n-2)*(n-3) << endl;
+        else cout << n*(n-1)*(n-3) << endl;
+    }
 
     return 0;
 }
