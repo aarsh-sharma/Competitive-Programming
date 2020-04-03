@@ -65,46 +65,51 @@ typedef vector<ll> vll;
 
 const ll mod = 1e9 + 7;
 const ll inf = LLONG_MAX;
-const ll N = 1e5 + 10;
+const ll N = 1e6 + 10;
 
-int countBits(int n)
-{
-    int count = 0;
-    while (n) {
-        count++;
-        n >>= 1;
+vector<pair<int, pll>> tree(4*N); // pair<ans<open, close>>
+string s;
+
+void build(int idx, int l, int r) {
+    if (r-l < 2) {
+        if (s[l] == '(') {
+            tree[idx].S.F = 1;
+        } else {
+            tree[idx].S.S = 1;
+        }
+        return;
     }
-    return count;
+    int mid = (l+r)/2;
+    build(2*idx, l, mid);
+    build(2*idx+1, mid, r);
+    int temp = min(tree[2*idx].S.F, tree[2*idx + 1].S.S);
+    tree[idx].F = tree[2*idx].F + tree[2*idx + 1].F + temp;
+    tree[idx].S.F = tree[2*idx].S.F + tree[2*idx + 1].S.F - temp;
+    tree[idx].S.S = tree[2*idx].S.S + tree[2*idx + 1].S.S - temp;
+}
+
+pair<int, pll> query(int x, int y, int idx, int l, int r) {
+    if (l >= y or x >= r) return {0, {0, 0}};
+    if (x <= l and y >= r) return tree[idx];
+    int mid = (l+r)/2;
+    pair<int, pll> a = query(x, y, 2*idx, l, mid);
+    pair<int, pll> b = query(x, y, 2*idx + 1, mid, r);
+    int temp = min(a.S.F, b.S.S);
+    return {a.F+b.F+temp, {a.S.F+b.S.F-temp, a.S.S+b.S.S-temp}};
 }
 
 int32_t main() {
     fast_io();
 
-    int t; cin >> t;
-    while (t--) {
-        int d, m; cin >> d >> m;
-        if (d == 1) {
-            cout << 1%m << endl;
-            continue;
-        }
-        int bits = countBits(d) - 1;
-        vector<vll> a(bits, vll(2));
-        f (i, 0, bits) {
-            a[i][1] = pow(2, i);
-        }
-        int ss = 1;
-        a[0][0] = d-a[0][1];
-        f (i, 1, bits) {
-            ss += a[i][1];
-            a[i][0] = (a[i-1][0]*(d-ss))%m;
-        }
-        int ans = 0, ans1 = 0;
-        f (i, 0, bits) {
-            ans1 = (ans1+a[i][0])%m;
-            ans = (ans%m + (a[i][0]*a[i][1])%m)%m;
-        }
-        // debug(a);
-        cout << (ans1+d)%m << endl;
+    cin >> s;
+    int n = s.size();
+    build(1, 0, n);
+    debug("build done");
+    int q; cin >> q;
+    while (q--) {
+        int l, r; cin >> l >> r;
+        pair<int, pll> ans = query(l-1, r, 1, 0, n);
+        cout << 2*ans.F << endl;
     }
 
     return 0;

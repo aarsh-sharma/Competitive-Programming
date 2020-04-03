@@ -67,44 +67,41 @@ const ll mod = 1e9 + 7;
 const ll inf = LLONG_MAX;
 const ll N = 1e5 + 10;
 
-int countBits(int n)
-{
-    int count = 0;
-    while (n) {
-        count++;
-        n >>= 1;
-    }
-    return count;
-}
-
 int32_t main() {
     fast_io();
 
-    int t; cin >> t;
-    while (t--) {
-        int d, m; cin >> d >> m;
-        if (d == 1) {
-            cout << 1%m << endl;
-            continue;
+    int n, m; cin >> n >> m;
+    int ss = 0;
+    vll a(m); f (i, 0, m) { cin >> a[i]; ss += a[i]; }
+    if (m > n or ss < n) {
+        cout << -1 << endl;
+        return 0;
+    }
+    int maxm = 0, remSum = n;
+    vll ans;
+    reverse(all(a));
+    f (i, 0, m) {
+        maxm = max(maxm+1, a[i]);
+        if (n - maxm > ss-a[i]) {
+            int diff = ((n-maxm) - (ss-a[i]));
+            debug(diff);
+            maxm += diff;
+            ans.pb(maxm-a[i]+1);
+        } else {
+            ans.pb(maxm-a[i]+1);
         }
-        int bits = countBits(d) - 1;
-        vector<vll> a(bits, vll(2));
-        f (i, 0, bits) {
-            a[i][1] = pow(2, i);
+        if ((maxm-a[i]+1 < 1) or (maxm > n)) {
+            debug(maxm, a[i]);
+            cout << -1 << endl;
+            return 0;
         }
-        int ss = 1;
-        a[0][0] = d-a[0][1];
-        f (i, 1, bits) {
-            ss += a[i][1];
-            a[i][0] = (a[i-1][0]*(d-ss))%m;
-        }
-        int ans = 0, ans1 = 0;
-        f (i, 0, bits) {
-            ans1 = (ans1+a[i][0])%m;
-            ans = (ans%m + (a[i][0]*a[i][1])%m)%m;
-        }
-        // debug(a);
-        cout << (ans1+d)%m << endl;
+        debug(ans);
+        ss -= a[i];
+    }
+    reverse(all(ans));
+    debug(ans);
+    for (auto it : ans) {
+        cout << it << " ";
     }
 
     return 0;

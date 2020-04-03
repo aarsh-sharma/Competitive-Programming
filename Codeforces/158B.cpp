@@ -67,45 +67,21 @@ const ll mod = 1e9 + 7;
 const ll inf = LLONG_MAX;
 const ll N = 1e5 + 10;
 
-int countBits(int n)
-{
-    int count = 0;
-    while (n) {
-        count++;
-        n >>= 1;
-    }
-    return count;
-}
-
 int32_t main() {
     fast_io();
 
-    int t; cin >> t;
-    while (t--) {
-        int d, m; cin >> d >> m;
-        if (d == 1) {
-            cout << 1%m << endl;
-            continue;
-        }
-        int bits = countBits(d) - 1;
-        vector<vll> a(bits, vll(2));
-        f (i, 0, bits) {
-            a[i][1] = pow(2, i);
-        }
-        int ss = 1;
-        a[0][0] = d-a[0][1];
-        f (i, 1, bits) {
-            ss += a[i][1];
-            a[i][0] = (a[i-1][0]*(d-ss))%m;
-        }
-        int ans = 0, ans1 = 0;
-        f (i, 0, bits) {
-            ans1 = (ans1+a[i][0])%m;
-            ans = (ans%m + (a[i][0]*a[i][1])%m)%m;
-        }
-        // debug(a);
-        cout << (ans1+d)%m << endl;
-    }
+    int n; cin >> n;
+    vll nos(5);
+    vll a(n); f (i, 0, n) { cin >> a[i]; nos[a[i]]++; }
+    int ans = nos[4];
+    nos[1] -= min(nos[1], nos[3]);
+    ans += nos[3];
+    ans += nos[2] / 2;
+    nos[2] %= 2;
+    ans += nos[1] / 4;
+    nos[1] %= 4;
+    ans += (nos[1] + 2 * nos[2] + 3) / 4;
+    cout << ans << "\n";
 
     return 0;
 }

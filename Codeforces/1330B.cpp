@@ -67,44 +67,49 @@ const ll mod = 1e9 + 7;
 const ll inf = LLONG_MAX;
 const ll N = 1e5 + 10;
 
-int countBits(int n)
-{
-    int count = 0;
-    while (n) {
-        count++;
-        n >>= 1;
-    }
-    return count;
-}
-
 int32_t main() {
     fast_io();
 
     int t; cin >> t;
     while (t--) {
-        int d, m; cin >> d >> m;
-        if (d == 1) {
-            cout << 1%m << endl;
-            continue;
+        int n; cin >> n;
+        vll a(n+10); f (i, 1, n+1) cin >> a[i];
+        vll right(n+10);
+        map<int, int> m;
+        int maxm = -inf;
+        f (i, 1, n+10) {
+            if (m[a[i]]) {
+                break;
+            }
+            m[a[i]] = 1;
+            maxm = max(maxm, a[i]);
+            if (maxm == i) {
+                right[i] = 1;
+            }
         }
-        int bits = countBits(d) - 1;
-        vector<vll> a(bits, vll(2));
-        f (i, 0, bits) {
-            a[i][1] = pow(2, i);
+        vll left(n+10);
+        map<int, int> mm;
+        maxm = -inf;
+        for (int i = n; i >= 1; i--) {
+            if (mm[a[i]]) {
+                break;
+            }
+            mm[a[i]] = 1;
+            maxm = max(maxm, a[i]);
+            if (maxm == n-i+1) {
+                left[i-1] = 1;
+            }
         }
-        int ss = 1;
-        a[0][0] = d-a[0][1];
-        f (i, 1, bits) {
-            ss += a[i][1];
-            a[i][0] = (a[i-1][0]*(d-ss))%m;
+        vector<pll> ans;
+        f (i, 1, n+1) {
+            if (left[i] and right[i]) {
+                ans.pb({i, n-i});
+            }
         }
-        int ans = 0, ans1 = 0;
-        f (i, 0, bits) {
-            ans1 = (ans1+a[i][0])%m;
-            ans = (ans%m + (a[i][0]*a[i][1])%m)%m;
+        cout << ans.size() << endl;
+        for (auto &it : ans) {
+            cout << it.F << " " << it.S << endl;
         }
-        // debug(a);
-        cout << (ans1+d)%m << endl;
     }
 
     return 0;
