@@ -1,111 +1,162 @@
-// aarsh01rsh@gmail.com
-// Aarsh Sharma
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
+typedef long long num;
+typedef vector<num> poly;
+const num p = 663224321;
 
-string to_string(string s) {
-    return '"' + s + '"';
-}
-string to_string(char ch) {
-    string s(1, ch);
-    return '\'' + s + '\'';
-}
-string to_string(const char *s) {
-    return to_string((string)s);
-}
-string to_string(bool b) {
-    return (b ? "true" : "false");
-}
-template <typename A, typename B>
-string to_string(pair<A, B> p) {
-return "(" + to_string(p.first) + ", " + to_string(p.second) + ")";
-}
-template <typename A>
-string to_string(A v) {
-    bool first = true;
-    string res = "{";
-    for (const auto &x : v) {
-        if (!first) {
-            res += ", ";
-        }
-        first = false;
-        res += to_string(x);
-    }
-    res += "}";
-    return res;
-}
-void debug_out() { cerr << endl; }
-template <typename Head, typename... Tail>
-void debug_out(Head H, Tail... T) {
-    cerr << " " << to_string(H);
-    debug_out(T...);
-}
-
-#ifndef ONLINE_JUDGE
-#define debug(...) cerr << "[" << #__VA_ARGS__ << "]:", debug_out(__VA_ARGS__)
-#else
-#define debug(...) 42
-#endif
-
-#define f(i, x, n) for (int i = x; i < n; i++)
-#define all(x) (x).begin(), (x).end()
-#define rall(x) (x).rbegin(), (x).rend()
-#define F first
-#define S second
-#define pb push_back
-#define endl "\n"
-#define unique(v) v.erase(unique(v.begin(), v.end()), v.end());
-#define fast_io() ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0)
-
-typedef long long int ll;
-#define int ll
-typedef pair<ll, ll> pll;
-typedef vector<vector<ll>> matrix;
-typedef vector<ll> vll;
-
-const ll mod = 1e9 + 7;
-const ll inf = LLONG_MAX;
-const ll N = 1e5 + 10;
-
-int countBits(int n)
+num pm(num a, num n = p - 2, num m = p)
 {
-    int count = 0;
-    while (n) {
-        count++;
-        n >>= 1;
-    }
-    return count;
+    num r = 1;
+    for (; n; n >>= 1, a = a * a % m)
+        if (n & 1)
+            r = r * a % m;
+    return r;
 }
 
-int32_t main() {
-    fast_io();
+struct NTT
+{
+    static const int g = 3;
+    void go(num *a, size_t n)
+    {
+        size_t l, b, i, s;
+        num d = pm(g, (p - 1) / n, p), w, t;
+        for (b = n >> 1, l = n; b; b >>= 1, l >>= 1, d = d * d % p)
+            for (w = 1, s = 0; s < b; ++s, w = w * d % p)
+                for (i = s; i < n; i += l)
+                {
+                    a[i | b] = (a[i] - (t = a[i | b])) * w % p;
+                    a[i] = (a[i] + t) % p;
+                }
+    }
+    void back(num *a, size_t n)
+    {
+        size_t l, b, i, s;
+        num d = pm(n, p - 2, p), w, t;
+        for (i = 0; i < n; ++i)
+            a[i] = a[i] * d % p;
+        for (b = 1, l = 2; b < n; b <<= 1, l <<= 1)
+            for (d = pm(g, p - 1 - (p - 1) / l, p), w = 1, s = 0; s < b; ++s, w = w * d % p)
+                for (i = s; i < n; i += l)
+                {
+                    t = a[i | b] * w;
+                    a[i | b] = (a[i] - t) % p;
+                    a[i] = (a[i] + t) % p;
+                }
+    }
+} ntt;
 
-    int t; cin >> t;
-    while (t--) {
-        int d, m; cin >> d >> m;
-        if (d == 1) {
-            cout << 1%m << endl;
-            continue;
-        }
-        int bits = countBits(d) - 1;
-        vector<vll> a(bits, vll(2));
-        f (i, 0, bits) {
-            a[i][1] = pow(2, i);
-        }
-        int ss = 1;
-        a[0][0] = d-a[0][1];
-        f (i, 1, bits) {
-            ss += a[i][1];
-            a[i][0] = (a[i-1][0]*(d-ss))%m;
-        }
-        int ans = 0, ans1 = 0;
-        f (i, 0, bits) {
-            ans1 = (ans1+a[i][0])%m;
-            ans = (ans%m + (a[i][0]*a[i][1])%m)%m;
-        }
-        // debug(a);
-        cout << (ans1+d)%m << endl;
+void sqr(poly &a)
+{
+    int n = 1, m = a.size();
+    for (; n < a.size() * 2 - 1; n <<= 1)
+        ;
+    a.resize(n, 0);
+    ntt.go(&a[0], n);
+    for (int i = 0; i < n; ++i)
+        a[i] = a[i] * a[i] % p;
+    ntt.back(&a[0], n);
+    a.resize(m * 2 - 1);
+}
+poly mul(poly a, poly b)
+{
+    int n = 1, l = a.size() + b.size() - 1;
+    for (; n < l; n <<= 1)
+        ;
+    a.resize(n, 0);
+    b.resize(n, 0);
+    ntt.go(&a[0], n);
+    ntt.go(&b[0], n);
+    for (int i = 0; i < n; ++i)
+        a[i] = a[i] * b[i] % p;
+    ntt.back(&a[0], n);
+    a.resize(l);
+    return a;
+}
+
+poly invM(poly f, int m)
+{
+    poly g;
+    int n = 1;
+    g.push_back(pm(f[0]));
+    for (; n < m;)
+    {
+        n <<= 1;
+        poly t = g;
+        sqr(t);
+        for (auto &x : g)
+            x = (x << 1) % p;
+        t = mul(poly(f.begin(), min(f.begin() + n, f.end())), t);
+        g.resize(n, 0);
+        for (int i = 0; i < n && i < t.size(); ++i)
+            g[i] = (g[i] - t[i]) % p;
+    }
+    return poly(g.begin(), g.begin() + m);
+}
+
+poly h, g, invG, f;
+
+// comb
+#define MAX 300005
+#define MOD 663224321
+#define ll long long
+ll fact[MAX], inverse[MAX], fact_inverse[MAX];
+
+void precalc()
+{
+    fact[0] = 1;
+
+    inverse[0] = 1;
+    inverse[1] = 1;
+
+    fact_inverse[0] = 1;
+    fact_inverse[1] = 1;
+
+    for (ll i = 1; i < MAX; i++)
+        fact[i] = (i * fact[i - 1]) % MOD;
+
+    for (ll i = 2; i < MAX; i++)
+    {
+        inverse[i] = (MOD - ((MOD / i) * inverse[MOD % i]) % MOD) % MOD;
+        fact_inverse[i] = (inverse[i] * fact_inverse[i - 1]) % MOD;
+    }
+}
+// ENDS
+
+int main()
+{
+    precalc();
+
+    int lim = 5 + (1e5);
+    h.resize(lim);
+    g.resize(lim);
+    for (int i = 0; i < lim; i++)
+    {
+        h[i] = pm(2, (i * 1LL * (i - 1)) / 2);
+        h[i] *= fact_inverse[i];
+        h[i] %= p;
+
+        g[i] = h[i];
+        h[i] = i * h[i] % p;
     }
 
-    return 0;
+    invG = invM(g, lim);
+    f = mul(h, invG);
+
+    for (int i = 1; i < f.size(); i++)
+    {
+        f[i] *= fact[i - 1];
+        f[i] %= p;
+        if (f[i] < 0)
+            f[i] += p;
+    }
+
+#define sd(x) scanf("%d", &x)
+    int q;
+    sd(q);
+    while (q--)
+    {
+        int n;
+        sd(n);
+        printf("%lld\n", f[n]);
+    }
 }
