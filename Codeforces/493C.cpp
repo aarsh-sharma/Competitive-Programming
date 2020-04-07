@@ -70,67 +70,44 @@ const ll N = 1e5 + 10;
 int32_t main() {
     fast_io();
 
-    int n, k; cin >> n >> k;
-    vector<pll> a(n); f (i, 0, n) { cin >> a[i].F; a[i].S = i; }
-    int team = 1;
-    sort(all(a));
-    set<int> pos;
-    f (i, 0, n) pos.insert(i);
-    // vll pos(n);
-    string ans(n, '0');
-    debug(ans);
-    for (int i = n-1; i >= 0; i--) {
-        if (pos.find(a[i].S) != pos.end()) {
-            auto it = pos.find(a[i].S);
-            int tk = k;
-            vll dels;
-            while (tk+1) {
-                dels.pb(*it);
-                tk--;
-                if (it == pos.begin()) break;
-                it--;
-            }
-            it = pos.find(a[i].S);
-            tk = k;
-            it++;
-            while (it != pos.end() and tk) {
-                dels.pb(*it);
-                tk--;
-                it++;
-            }
-            for (auto it : dels) {
-                ans[it] = '0' + team;
-                pos.erase(it);
-            }
-            if (team == 1) team = 2;
-            else team = 1;
-        }
-        debug(ans);
-        // if (pos[a[i].S] == 0) {
-        //     pos[a[i].S] = team;
-        //     int idx = a[i].S + 1;
-        //     int tk = k;
-        //     while (tk and idx < n) {
-        //         if (pos[idx] == 0) {
-        //             pos[idx] = team;
-        //             tk--;
-        //         }
-        //         idx++;
-        //     }
-        //     idx = a[i].S - 1;
-        //     tk = k;
-        //     while (idx >= 0 and tk) {
-        //         if (pos[idx] == 0) {
-        //             pos[idx] = team;
-        //             tk--;
-        //         }
-        //         idx--;
-        //     }
-        //     if (team == 1) team = 2;
-        //     else team = 1;
-        // }
+    int n; cin >> n;
+    vector<pll> a;
+    f (i, 0, n) {
+        int tt; cin >> tt;
+        a.pb({tt, 1});
     }
-    cout << ans << endl;
+    int m; cin >> m;
+    f (i, 0, m) {
+        int tt; cin >> tt;
+        a.pb({tt, 2});
+    }
+    sort(all(a));
+    debug(a);
+    int scorea = 3*n, scoreb = 3*m;
+    int diff = scorea - scoreb;
+    pll ans = {scorea, scoreb};
+    int i = 0;
+    while (i < n+m) {
+        int counta = 0, countb = 0;
+        while (i < n+m) {
+            if (a[i].S == 1) counta++;
+            else countb++;
+            if (i < n+m-1 and a[i+1].F != a[i].F) break;
+            i++;
+        }
+        scorea -= counta;
+        scoreb -= countb;
+        if (scorea-scoreb >= diff) {
+            if (scorea-scoreb == diff) {
+                if (scorea > ans.F) ans = {scorea, scoreb};
+            } else {
+                diff = scorea - scoreb;
+                ans = {scorea, scoreb};
+            }
+        }
+        i++;
+    }
+    cout << ans.F << ":" << ans.S << endl;
 
     return 0;
 }

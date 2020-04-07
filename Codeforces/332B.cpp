@@ -71,66 +71,39 @@ int32_t main() {
     fast_io();
 
     int n, k; cin >> n >> k;
-    vector<pll> a(n); f (i, 0, n) { cin >> a[i].F; a[i].S = i; }
-    int team = 1;
-    sort(all(a));
-    set<int> pos;
-    f (i, 0, n) pos.insert(i);
-    // vll pos(n);
-    string ans(n, '0');
-    debug(ans);
-    for (int i = n-1; i >= 0; i--) {
-        if (pos.find(a[i].S) != pos.end()) {
-            auto it = pos.find(a[i].S);
-            int tk = k;
-            vll dels;
-            while (tk+1) {
-                dels.pb(*it);
-                tk--;
-                if (it == pos.begin()) break;
-                it--;
-            }
-            it = pos.find(a[i].S);
-            tk = k;
-            it++;
-            while (it != pos.end() and tk) {
-                dels.pb(*it);
-                tk--;
-                it++;
-            }
-            for (auto it : dels) {
-                ans[it] = '0' + team;
-                pos.erase(it);
-            }
-            if (team == 1) team = 2;
-            else team = 1;
-        }
-        debug(ans);
-        // if (pos[a[i].S] == 0) {
-        //     pos[a[i].S] = team;
-        //     int idx = a[i].S + 1;
-        //     int tk = k;
-        //     while (tk and idx < n) {
-        //         if (pos[idx] == 0) {
-        //             pos[idx] = team;
-        //             tk--;
-        //         }
-        //         idx++;
-        //     }
-        //     idx = a[i].S - 1;
-        //     tk = k;
-        //     while (idx >= 0 and tk) {
-        //         if (pos[idx] == 0) {
-        //             pos[idx] = team;
-        //             tk--;
-        //         }
-        //         idx--;
-        //     }
-        //     if (team == 1) team = 2;
-        //     else team = 1;
-        // }
+    vll a(n); f (i, 0, n) cin >> a[i];
+    vll ss(n-k+1);
+    int ts = 0;
+    f (i, 0, k) {
+        ts += a[i];
     }
-    cout << ans << endl;
+    ss[0] = ts;
+    f (i, k, n) {
+        ts += a[i] - a[i-k];
+        ss[i-k+1] = ts;
+    }
+    vector<pll> maxis(n-k+1);
+    int maxm = -inf;
+    int idx;
+    for (int i = n-k; i >= 0; i--) {
+        if (ss[i] >= maxm) {
+            maxm = ss[i];
+            idx = i;
+        }
+        maxis[i] = {maxm, idx};
+    }
+    debug(ss);
+    debug(maxis);
+    pll ans; ts = -inf;
+    f (i, 0, n-2*k+1) {
+        // ans = max(ans, ss[i]+maxis[i+k]);
+        if (ss[i]+maxis[i+k].F > ts) {
+            ts = ss[i]+maxis[i+k].F;
+            ans = {i, maxis[i+k].S};
+        }
+    }
+    debug(ts);
+    cout << ans.F+1 << " " << ans.S+1 << endl;
 
     return 0;
 }

@@ -106,29 +106,6 @@ int32_t main() {
             else team = 1;
         }
         debug(ans);
-        // if (pos[a[i].S] == 0) {
-        //     pos[a[i].S] = team;
-        //     int idx = a[i].S + 1;
-        //     int tk = k;
-        //     while (tk and idx < n) {
-        //         if (pos[idx] == 0) {
-        //             pos[idx] = team;
-        //             tk--;
-        //         }
-        //         idx++;
-        //     }
-        //     idx = a[i].S - 1;
-        //     tk = k;
-        //     while (idx >= 0 and tk) {
-        //         if (pos[idx] == 0) {
-        //             pos[idx] = team;
-        //             tk--;
-        //         }
-        //         idx--;
-        //     }
-        //     if (team == 1) team = 2;
-        //     else team = 1;
-        // }
     }
     cout << ans << endl;
 
