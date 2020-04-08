@@ -87,6 +87,7 @@ int32_t main() {
         }
         m[ts].pb(i);
     }
+    debug("bahar");
     int maxm = 0;
     int ans = (n*(n+1))/2;
     debug(counts);

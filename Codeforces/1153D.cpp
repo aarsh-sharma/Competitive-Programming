@@ -65,36 +65,38 @@ typedef vector<ll> vll;
 
 const ll mod = 1e9 + 7;
 const ll inf = LLONG_MAX;
-const ll N = 1e5 + 10;
+const ll N = 3e5 + 10;
+
+vll op(N);
+vll g[N];
+
+int dfs(int s) {
+    int count = 0;
+    if (op[s]) count = inf;
+    for (auto it : g[s]) {
+        if (op[s] == 0) {
+            if (g[it].size() == 0) count++;
+            else count += dfs(it);
+        } else {
+            if (g[it].size() == 0) count = 1;
+            else count = min(count, dfs(it));
+        }
+    }
+    return count;
+}
 
 int32_t main() {
     fast_io();
 
     int n; cin >> n;
-    vll a(n+1);
-    f (i, 1, n+1) {
-        cin >> a[i];
+    f (i, 1, n+1) cin >> op[i];
+    set<int> s;
+    f (i, 2, n+1) {
+        int p; cin >> p;
+        g[p].pb(i);
+        s.insert(p);
     }
-    int count = 0, ts = 0;
-    vll counts(n+1);
-    map<int, vll> m;
-    m[0].pb(0);
-    f (i, 1, n+1) {
-        ts += a[i];
-        debug(ts, m[ts]);
-        if (m[ts].size() > 0) {
-            counts[m[ts].back()] = n+1-i;
-        }
-        m[ts].pb(i);
-    }
-    int maxm = 0;
-    int ans = (n*(n+1))/2;
-    debug(counts);
-    for (int i = n; i >= 0; i--) {
-        maxm = max(maxm, counts[i]);
-        ans -= maxm;
-    }
-    cout << ans;
+    cout << (n-s.size()) - dfs(1) + 1 << endl;
 
     return 0;
 }

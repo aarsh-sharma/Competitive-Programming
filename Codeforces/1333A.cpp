@@ -70,31 +70,19 @@ const ll N = 1e5 + 10;
 int32_t main() {
     fast_io();
 
-    int n; cin >> n;
-    vll a(n+1);
-    f (i, 1, n+1) {
-        cin >> a[i];
-    }
-    int count = 0, ts = 0;
-    vll counts(n+1);
-    map<int, vll> m;
-    m[0].pb(0);
-    f (i, 1, n+1) {
-        ts += a[i];
-        debug(ts, m[ts]);
-        if (m[ts].size() > 0) {
-            counts[m[ts].back()] = n+1-i;
+    int t; cin >> t;
+    while (t--) {
+        int n, m; cin >> n >> m;
+        f (i, 0, n) {
+            f (j, 0, m) {
+                if (i == n-1 and j == m-1) {
+                    cout << 'W';
+                } else {
+                    cout << 'B';
+                }
+            } cout << endl;
         }
-        m[ts].pb(i);
     }
-    int maxm = 0;
-    int ans = (n*(n+1))/2;
-    debug(counts);
-    for (int i = n; i >= 0; i--) {
-        maxm = max(maxm, counts[i]);
-        ans -= maxm;
-    }
-    cout << ans;
 
     return 0;
 }
