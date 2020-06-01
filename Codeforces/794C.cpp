@@ -69,24 +69,38 @@ const ll N = 1e5 + 10;
 int32_t main() {
     fast_io();
 
-    int t; cin >> t;
-    while (t--) {
-        int n, k; cin >> n >> k;
-        vll a(n); f (i, 0, n) cin >> a[i];
-        vll b(n); f (i, 0, n) cin >> b[i];
-        sort(all(a));
-        sort(rall(b));
-        int ans = 0;
-        f (i, 0, n) {
-            if (k and b[i] > a[i]) {
-                ans += b[i];
-                k--;
+    string a, b; cin >> a >> b;
+    sort(all(a));
+    sort(rall(b));
+    int n = a.size();
+    string s(n, '#');
+    debug(s);
+    int asz = (n%2) ? n/2+1 : n/2;
+    a = a.substr(0, asz);
+    b = b.substr(0, n/2);
+    int ast = 0, aen = a.size()-1;
+    int bst = 0, ben = b.size()-1;
+    int sst = 0, sen = n-1;
+    f (i, 0, n) {
+        if (i % 2) {
+            if (a[ast] < b[bst]) {
+                s[sst] = b[bst];
+                sst++; bst++;
             } else {
-                ans += a[i];
+                s[sen] = b[ben];
+                sen--; ben--;
+            }
+        } else {
+            if (a[ast] < b[bst]) {
+                s[sst] = a[ast];
+                sst++; ast++;
+            } else {
+                s[sen] = a[aen];
+                sen--; aen--;
             }
         }
-        cout << ans << endl;
     }
+    cout << s << endl;
 
     return 0;
 }

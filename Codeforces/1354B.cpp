@@ -71,21 +71,21 @@ int32_t main() {
 
     int t; cin >> t;
     while (t--) {
-        int n, k; cin >> n >> k;
-        vll a(n); f (i, 0, n) cin >> a[i];
-        vll b(n); f (i, 0, n) cin >> b[i];
-        sort(all(a));
-        sort(rall(b));
-        int ans = 0;
-        f (i, 0, n) {
-            if (k and b[i] > a[i]) {
-                ans += b[i];
-                k--;
-            } else {
-                ans += a[i];
+        string s; cin >> s;
+        vll pos(3, -1);
+        int n = s.size(), ans = inf;
+        bool ok = false;
+        for (int i = 0; i < n; i++) {
+            int cur = s[i] - '1';
+            pos[cur] = i;
+            if (pos[0] >= 0 and pos[1] >= 0 and pos[2] >= 0) {
+                ans = min(ans, *max_element(all(pos)) - *min_element(all(pos)) + 1);
+                ok = true;
             }
+            // debug(cur, pos);
         }
-        cout << ans << endl;
+        if (ok) cout << ans << endl;
+        else cout << 0 << endl;
     }
 
     return 0;

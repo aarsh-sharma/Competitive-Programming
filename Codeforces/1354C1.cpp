@@ -71,21 +71,10 @@ int32_t main() {
 
     int t; cin >> t;
     while (t--) {
-        int n, k; cin >> n >> k;
-        vll a(n); f (i, 0, n) cin >> a[i];
-        vll b(n); f (i, 0, n) cin >> b[i];
-        sort(all(a));
-        sort(rall(b));
-        int ans = 0;
-        f (i, 0, n) {
-            if (k and b[i] > a[i]) {
-                ans += b[i];
-                k--;
-            } else {
-                ans += a[i];
-            }
-        }
-        cout << ans << endl;
+        int n; cin >> n;
+        n *= 2;
+        double ans = 1 / tan((2 * acos(0.0)) / n);
+        cout << setprecision(6) << fixed << ans << endl;
     }
 
     return 0;

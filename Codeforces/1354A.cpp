@@ -71,21 +71,17 @@ int32_t main() {
 
     int t; cin >> t;
     while (t--) {
-        int n, k; cin >> n >> k;
-        vll a(n); f (i, 0, n) cin >> a[i];
-        vll b(n); f (i, 0, n) cin >> b[i];
-        sort(all(a));
-        sort(rall(b));
-        int ans = 0;
-        f (i, 0, n) {
-            if (k and b[i] > a[i]) {
-                ans += b[i];
-                k--;
-            } else {
-                ans += a[i];
-            }
+        int a, b, c, d; cin >> a >> b >> c >> d;
+        if (a <= b) {
+            cout << b << endl;
+            continue;
         }
-        cout << ans << endl;
+        if (d >= c) {
+            cout << -1 << endl;
+            continue;
+        }
+        a -= b; a = ceil(a / ((c-d)*1.0)) * c;
+        cout << a + b << endl;
     }
 
     return 0;
