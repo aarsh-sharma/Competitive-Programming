@@ -62,21 +62,14 @@ typedef pair<ll, ll> pll;
 typedef vector<vector<ll>> matrix;
 typedef vector<ll> vll;
 
-const ll mod = 1e9 + 7;
+const ll mod = 998244353;
 const ll inf = LLONG_MAX;
 const ll N = 1e5 + 10;
 
 int32_t main() {
     fast_io();
 
-    int t; cin >> t;
-    while (t--) {
-        int n, m, k; cin >> n >> m >> k;
-        int d = n / k;
-        int one = min(m, d);
-        int two = (m - one + k - 2) / (k - 1);
-        cout << one - two << endl;
-    }
+    // code here
 
     return 0;
 }

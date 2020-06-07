@@ -69,14 +69,30 @@ const ll N = 1e5 + 10;
 int32_t main() {
     fast_io();
 
-    int t; cin >> t;
-    while (t--) {
-        int n, m, k; cin >> n >> m >> k;
-        int d = n / k;
-        int one = min(m, d);
-        int two = (m - one + k - 2) / (k - 1);
-        cout << one - two << endl;
+    int u, v; cin >> u >> v;
+
+    if ((u%2) ^ (v%2) or u > v) {
+        cout << -1 << endl;
+        return 0;
     }
+
+    vll ans;
+
+    if (u) ans.pb(u);
+    v -= u;
+    if (v) {
+        if ((v/2) & u) {
+            ans.pb(v/2);
+            ans.pb(v/2);
+        } else {
+            if (ans.size()) ans.pop_back();
+            ans.push_back(u + v/2);
+            ans.push_back(v/2);
+        }
+    }
+
+    cout << ans.size() << endl;
+    if (ans.size()) { for (auto ii : ans) cout << ii << " "; cout << endl; }
 
     return 0;
 }

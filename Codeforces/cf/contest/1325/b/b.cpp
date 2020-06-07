@@ -71,11 +71,9 @@ int32_t main() {
 
     int t; cin >> t;
     while (t--) {
-        int n, m, k; cin >> n >> m >> k;
-        int d = n / k;
-        int one = min(m, d);
-        int two = (m - one + k - 2) / (k - 1);
-        cout << one - two << endl;
+        int n; cin >> n;
+        set<int> ss; f (i, 0, n) { int tt; cin >> tt; ss.insert(tt); }
+        cout << ss.size() << endl;
     }
 
     return 0;

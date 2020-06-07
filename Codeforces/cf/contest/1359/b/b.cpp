@@ -71,11 +71,25 @@ int32_t main() {
 
     int t; cin >> t;
     while (t--) {
-        int n, m, k; cin >> n >> m >> k;
-        int d = n / k;
-        int one = min(m, d);
-        int two = (m - one + k - 2) / (k - 1);
-        cout << one - two << endl;
+        int n, m, x, y; cin >> n >> m >> x >> y;
+        vector<string> a(n); f (i, 0, n) cin >> a[i];
+
+        int one = 0, two = 0, ans;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (a[i][j] == '.') one++;
+                if (j < m-1 and a[i][j] == '.' and a[i][j+1] == '.') {
+                    two++;
+                    one--;
+                    a[i][j+1] = '*';
+                }
+            }
+        }
+
+        if (2*x < y) ans = (one + 2*two) * x;
+        else ans = one * x + two * y;
+
+        cout << ans << endl;
     }
 
     return 0;

@@ -66,16 +66,32 @@ const ll mod = 1e9 + 7;
 const ll inf = LLONG_MAX;
 const ll N = 1e5 + 10;
 
+vll adj[N];
+
 int32_t main() {
     fast_io();
 
-    int t; cin >> t;
-    while (t--) {
-        int n, m, k; cin >> n >> m >> k;
-        int d = n / k;
-        int one = min(m, d);
-        int two = (m - one + k - 2) / (k - 1);
-        cout << one - two << endl;
+    int n; cin >> n;
+    vll ans(n, -1);
+    f (i, 0, n-1) {
+        int u, v; cin >> u >> v;
+        adj[u].pb(i);
+        adj[v].pb(i);
+    }
+    pll maxm = {0, 0};
+    f (i, 0, n) {
+        maxm = max(maxm, {(int)adj[i].size(), i});
+    }
+    int curr = 0;
+    for (auto ii : adj[maxm.second]) {
+        ans[ii] = curr++;
+    }
+
+    f (i, 0, n-1) {
+        if (ans[i] == -1) {
+            ans[i] = curr++;
+        }
+        cout << ans[i] << endl;
     }
 
     return 0;

@@ -71,11 +71,29 @@ int32_t main() {
 
     int t; cin >> t;
     while (t--) {
-        int n, m, k; cin >> n >> m >> k;
-        int d = n / k;
-        int one = min(m, d);
-        int two = (m - one + k - 2) / (k - 1);
-        cout << one - two << endl;
+        int n, m; cin >> n >> m;
+        vector<vll> a(n, vll(m));
+        f (i, 0, n) f (j, 0, m) cin >> a[i][j];
+        int rows = 0, cols = 0;
+        f (i, 0, n) {
+            if (!*max_element(all(a[i]))) {
+                rows++;
+            }
+        }
+        f (j, 0, m) {
+            int flag = 0;
+            f (i, 0, n) {
+                if (a[i][j]) {
+                    flag = 1;
+                    break;
+                }
+            }
+            if (!flag) cols++;
+        }
+
+        debug(rows, cols);
+        if (min(rows, cols) % 2) cout << "Ashish\n";
+        else cout << "Vivek\n";
     }
 
     return 0;

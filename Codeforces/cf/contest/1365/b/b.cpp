@@ -71,11 +71,23 @@ int32_t main() {
 
     int t; cin >> t;
     while (t--) {
-        int n, m, k; cin >> n >> m >> k;
-        int d = n / k;
-        int one = min(m, d);
-        int two = (m - one + k - 2) / (k - 1);
-        cout << one - two << endl;
+        int n; cin >> n;
+        vll a(n); f (i, 0, n) cin >> a[i];
+        vll b(n); f (i, 0, n) cin >> b[i];
+        vll ones, zeros;
+        f (i, 0, n) {
+            if (b[i]) {
+                ones.pb(a[i]);
+            } else {
+                zeros.pb(a[i]);
+            }
+        }
+        if (ones.size() and zeros.size()) {
+            cout << "Yes\n";
+        } else {
+            if (is_sorted(all(ones)) and is_sorted(all(zeros))) cout << "Yes\n";
+            else cout << "No\n";
+        }
     }
 
     return 0;

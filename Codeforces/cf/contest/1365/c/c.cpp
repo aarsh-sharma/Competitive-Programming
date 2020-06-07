@@ -69,14 +69,33 @@ const ll N = 1e5 + 10;
 int32_t main() {
     fast_io();
 
-    int t; cin >> t;
-    while (t--) {
-        int n, m, k; cin >> n >> m >> k;
-        int d = n / k;
-        int one = min(m, d);
-        int two = (m - one + k - 2) / (k - 1);
-        cout << one - two << endl;
+    int n; cin >> n;
+    vll a(n); f (i, 0, n) cin >> a[i];
+    unordered_map<int, int> b; f (i, 0, n) {
+        int tt; cin >> tt;
+        b[tt] = i;
     }
+
+    map<int, int> m;
+
+    f (i, 0, n) {
+        int id1 = i;
+        int id2 = b[a[i]];
+        int diff;
+        if (id2 <= id1) {
+            diff = id1 - id2;
+        } else {
+            diff = id1 + (n - id2);
+        }
+        m[diff]++;
+    }
+
+    int ans = 0;
+    for (auto ii : m) ans = max(ans, ii.second);
+
+    debug(m);
+
+    cout << ans << endl;
 
     return 0;
 }

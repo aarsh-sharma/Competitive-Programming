@@ -66,16 +66,93 @@ const ll mod = 1e9 + 7;
 const ll inf = LLONG_MAX;
 const ll N = 1e5 + 10;
 
+// vll offs(61);
+// vll ons(61);
+// int ans = 0;
+
+// int calcans(vll toffs, vll tons) {
+//     int tot = 0;
+//     for (int i = 0; i < 61; i++) {
+//         if (toffs[i] <= 2 and tons[i]) {
+//             tot += pow(2, i);
+//         }
+//     }
+
+//     return tot;
+// }
+
+// string decToBinary(int n)
+// {
+//     string res;
+//     for (int i = 60; i >= 0; i--)
+//     {
+//         int k = n >> i;
+//         if (k & 1)
+//             res += '1';
+//         else
+//             res += '0';
+//     }
+//     reverse(all(res));
+
+//     return res;
+// }
+
+// void calc(int n) {
+//     vll toffs = offs;
+//     vll tons = ons;
+
+//     string bin = decToBinary(n);
+
+//     for (int i = 0; i < 61; i++) {
+//         if (bin[i] != '1') {
+//             toffs[i]++;
+//         } else {
+//             tons[i]++;
+//         }
+//     }
+
+//     int tans = calcans(toffs, tons);
+//     debug(tans, n);
+
+//     if (tans > ans) {
+//         ans = tans;
+//         offs = toffs;
+//         ons = tons;
+//     }
+// }
+
 int32_t main() {
     fast_io();
 
-    int t; cin >> t;
-    while (t--) {
-        int n, m, k; cin >> n >> m >> k;
-        int d = n / k;
-        int one = min(m, d);
-        int two = (m - one + k - 2) / (k - 1);
-        cout << one - two << endl;
+    int n; cin >> n;
+    vll a(n); f (i, 0, n) cin >> a[i];
+
+    // sort(rall(a));
+
+    // for (int i = 0; i < n; i++) {
+    //     calc(a[i]);
+    // }
+
+    // cout << ans << endl;
+
+    /*
+        FATGI FATGI.....
+    */
+
+    if (n == 1) cout << a[0] << endl;
+    else if (n == 2) cout << (a[0] | a[1]) << endl;
+    else {
+        int ans = 0;
+        f (i, 0, n) {
+            f (j, i+1, n) {
+                f (k, j+1, n) {
+                    int tans = (a[i] | a[j]) | a[k];
+                    ans = max(ans, tans);
+                }
+            }
+        }
+
+        cout << ans << endl;
     }
 
     return 0;

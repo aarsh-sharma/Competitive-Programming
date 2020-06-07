@@ -63,7 +63,7 @@ typedef vector<vector<ll>> matrix;
 typedef vector<ll> vll;
 
 const ll mod = 1e9 + 7;
-const ll inf = LLONG_MAX;
+const ll inf = 1e18;
 const ll N = 1e5 + 10;
 
 int32_t main() {
@@ -71,11 +71,29 @@ int32_t main() {
 
     int t; cin >> t;
     while (t--) {
-        int n, m, k; cin >> n >> m >> k;
-        int d = n / k;
-        int one = min(m, d);
-        int two = (m - one + k - 2) / (k - 1);
-        cout << one - two << endl;
+        int n, m; cin >> n >> m;
+        vector<vll> a(n, vll(m));
+        f (i, 0, n) f (j, 0, m) cin >> a[i][j];
+
+        int a00 = a[0][0], ans = inf;
+
+        f (x, 0, n) f (y, 0, m) {
+            int need = a[x][y] - x - y;
+            if (need > a00) continue;
+            a[0][0] = need;
+            vector<vll> dp(n, vll(m, inf));
+            dp[0][0] = a00 - need;
+
+            f (i, 0, n) f (j, 0, m) {
+                int need = a[0][0] + i + j;
+                if (need > a[i][j]) continue;
+                if (i > 0) dp[i][j] = min(dp[i][j], dp[i-1][j] + a[i][j] - need);
+                if (j > 0) dp[i][j] = min(dp[i][j], dp[i][j-1] + a[i][j] - need);
+            }
+            ans = min(ans, dp[n-1][m-1]);
+        }
+
+        cout << ans << endl;
     }
 
     return 0;
