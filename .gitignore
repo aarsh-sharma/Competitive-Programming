@@ -57,3 +57,7 @@ CP/in
 GJam/test.py
 GJam/in.txt
 Codeforces/in
+CP/test.java
+*.class
+/CP/out.txt
+*.out
